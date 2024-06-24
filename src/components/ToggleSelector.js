@@ -1,5 +1,5 @@
 
-export default function MenuSelector({isCompare, toggleMenu}) {
+export default function ToggleSelector({isCompare, toggleMenu, toggleText1, toggleText2}) {
 
     function getMenuItemClass(itemId) {
         if(itemId === "time-series") {
@@ -13,8 +13,8 @@ export default function MenuSelector({isCompare, toggleMenu}) {
 
     return(
         <div className="menu-selector">
-            <h3 className={getMenuItemClass('time-series')} onClick={toggleMenu}>Time Series</h3>
-            <h3 className={getMenuItemClass('compare')} onClick={toggleMenu}>Compare</h3>
+            <h3 className={getMenuItemClass('time-series')} onClick={toggleMenu}>{toggleText1}</h3>
+            <h3 className={getMenuItemClass('compare')} onClick={toggleMenu}>{toggleText2}</h3>
         </div>
     )
 }

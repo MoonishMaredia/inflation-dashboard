@@ -1,6 +1,20 @@
 import ToggleSelector from "./ToggleSelector"
 import {useState} from 'react'
 import Select from 'react-select'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import SelectModal from "./SelectModal";
+
+import {
+    typeOptions,
+    granularityOptions,
+    monthOptions,
+    colourOptions,
+    foodOptions,
+    groupedOptions,
+    yearOptions,
+    detailOptions
+} from '../optionsData.js'
 
 
 export default function OptionsMenu() {
@@ -10,55 +24,14 @@ export default function OptionsMenu() {
         setIsCompare(prev=>!prev)
     }
 
+    const [modalOpen, setModalOpen] = useState(false)
     const [seriesType, setSeriesType] = useState('');
-    const typeOptions = [
-        { value: 'CPI Level', label: 'CPI Level' },
-        { value: 'CPI Rate', label: 'CPI Rate' },
-      ]
-
     const [seriesGranularity, setSeriesGranularity] = useState('');
-    const granularityOptions = [
-        { value: 'Monthly', label: 'Monthly' },
-        { value: 'Annual', label: 'Annual' },
-    ]
-
-    const [monthStart, setMonthStart] = useState('January');
-    const [monthEnd, setMonthEnd] = useState('January');
-    const monthOptions = [
-        { value: 'January', label: 'January' },
-        { value: 'February', label: 'February' },
-        { value: 'March', label: 'March' },
-        { value: 'April', label: 'April' },
-        { value: 'May', label: 'May' },
-        { value: 'June', label: 'June' },
-        { value: 'July', label: 'July' },
-        { value: 'August', label: 'August' },
-        { value: 'September', label: 'September' },
-        { value: 'October', label: 'October' },
-        { value: 'November', label: 'November' },
-        { value: 'December', label: 'December' }
-    ];
-
-
-    const [yearStart, setYearStart] = useState('1998');
-    const [yearEnd, setYearEnd] = useState('2024');
-    const yearOptions = [];
-    for (let i = 1998; i <= new Date().getFullYear(); i++) {
-        yearOptions.push({ value: i.toString(), label: i.toString() });
-    }
-
-    const colourOptions = [
-        { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
-        { value: 'blue', label: 'Blue', color: '#0052CC', isDisabled: true },
-        { value: 'purple', label: 'Purple', color: '#5243AA' },
-        { value: 'red', label: 'Red', color: '#FF5630', isFixed: true },
-        { value: 'orange', label: 'Orange', color: '#FF8B00' },
-        { value: 'yellow', label: 'Yellow', color: '#FFC400' },
-        { value: 'green', label: 'Green', color: '#36B37E' },
-        { value: 'forest', label: 'Forest', color: '#00875A' },
-        { value: 'slate', label: 'Slate', color: '#253858' },
-        { value: 'silver', label: 'Silver', color: '#666666' },
-      ];
+    const [monthStart, setMonthStart] = useState('');
+    const [monthEnd, setMonthEnd] = useState('');
+    const [yearStart, setYearStart] = useState('');
+    const [yearEnd, setYearEnd] = useState('');
+    const [addedSeries, setAddedSeries] = useState([])
       
 
     return (
@@ -70,7 +43,7 @@ export default function OptionsMenu() {
             toggleText2={"Compare"}/>
 
             <div className="selector-item">
-                <label htmlFor="type">Specify series type:</label>
+                <label htmlFor="type">Specify series type</label>
                 <Select 
                     id="type" 
                     onChange={setSeriesType} 
@@ -78,7 +51,7 @@ export default function OptionsMenu() {
             </div>
 
             <div className="selector-item">
-                <label htmlFor="granularity">Specify granularity:</label>
+                <label htmlFor="granularity">Specify granularity</label>
                 <Select 
                     id="granularity" 
                     onChange={setSeriesGranularity} 
@@ -87,7 +60,7 @@ export default function OptionsMenu() {
 
             {seriesGranularity.value==="Monthly" && 
                 <div className="selector-item">
-                    <label>Series Start:</label>
+                    <label>Series Start</label>
                     <div className="month-year-input">
                         <Select 
                         id="month" 
@@ -106,7 +79,7 @@ export default function OptionsMenu() {
 
             {seriesGranularity.value!=="Monthly" && 
                 <div className="selector-item">
-                    <label>Series Start:</label>
+                    <label>Series Start</label>
                     <div className="">
                         <Select 
                         id="year" 
@@ -120,7 +93,7 @@ export default function OptionsMenu() {
 
             {seriesGranularity.value==="Monthly" && 
                 <div className="selector-item">
-                    <label>Series End:</label>
+                    <label>Series End</label>
                     <div className="month-year-input">
                         <Select 
                         id="month" 
@@ -139,7 +112,7 @@ export default function OptionsMenu() {
 
             {seriesGranularity.value!=="Monthly" && 
                 <div className="selector-item">
-                    <label>Series End:</label>
+                    <label>Series End</label>
                     <div className="">
                         <Select 
                         id="year" 
@@ -151,14 +124,37 @@ export default function OptionsMenu() {
             }
 
             <div className="selector-item">
-                <label htmlFor="granularity">Select categories:</label>
+                <label>Add series</label>
+                <button className="add-series-btn" onClick={()=>setModalOpen(prev=>!prev)}>
+                    <FontAwesomeIcon className="plus-icon" icon={faPlus}/>
+                    <span className="selected-pill">{addedSeries.length} selected</span>
+                </button>
+            </div>
+
+            {modalOpen && 
+                <SelectModal
+                handleModal={()=>setModalOpen(prev=>!prev)}/>
+            }
+
+            {/* <div className="selector-item">
+                <label htmlFor="granularity">Specify series detail</label>
                 <Select
-                    closeMenuOnSelect={false}
-                    defaultValue={[colourOptions[0], colourOptions[1]]}
-                    isMulti
-                    options={colourOptions}
+                    closeMenuOnSelect={true}
+                    options={detailOptions}
+                    placeholder="Select level of detail"
                 />
             </div>
+
+            <div className="selector-item">
+                <label htmlFor="granularity">Optional - Add individual categories</label>
+                <Select
+                    closeMenuOnSelect={false}
+                    isMulti
+                    options={groupedOptions}
+                    placeholder="Select additional categories"
+                />
+            </div> */}
+
         </div>
     )
 }

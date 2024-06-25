@@ -95,3 +95,141 @@ body {
 .month-year-input > .year-input {
   width: 30%;
 }
+
+.add-series-btn {
+  display: flex;
+  align-self: center;
+  width: 100%;
+  padding: 0.75rem 0;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: 600;
+  border: 1px solid rgb(203 213 225);
+}
+
+.plus-icon {
+  margin-left: 1rem;
+  color: rgb(71 85 105);
+  cursor: pointer;
+
+}
+
+.add-series-btn > span {
+  margin-left: 10px;
+}
+
+.selector-item > button {
+  display: flex;
+  align-items: center;
+}
+
+.selected-pill {
+  background-color: rgb(203 213 225);
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  padding-left: 0.75rem;
+  padding-right: 1.1rem;
+  border-radius: 2em;
+  font-weight: 400;
+}
+
+.modal {
+  background-color: white;
+  width: 70vw;
+  z-index: 1;
+  position: fixed;
+  border: 1px solid rgb(203 213 225);
+  top: 15%;
+  bottom: 10%;
+  left: 15%;
+  right: 15%;
+  border-radius: 5px;
+}
+
+.modal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.modal-header {
+  font-size: 1em;
+  font-weight: 500;
+  color: rgb(71 85 105);
+}
+
+.x-icon {
+  margin-right: 2%;
+  cursor: pointer;
+}
+
+.modal-footer {
+  height: 12%;
+  width: 100%;
+  background: rgb(248 250 252);
+  position: absolute;
+  top: 88%;
+  z-index: 100;
+  border-top: 1px solid rgb(203 213 225);
+  border-bottom: 1px solid rgb(203 213 225);
+
+}
+
+.modal-footer-elements {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-selected-pills {
+  display: flex;
+}
+
+.modal-category-table {
+  display: flex;
+  margin-top: 2%;
+  margin-left: 3%;
+  margin-right: 3%;
+  justify-content: space-between;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border-bottom: 1px solid black;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.modal-category-table > p {
+  margin-bottom: 1%;
+  color: rgb(71 85 105);
+}
+
+.modal-card {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.modal-card-checkbox {
+  display: flex;
+}
+
+.level0-title {
+  margin-left: 10px;
+}
+
+.level1-title {
+  margin-left: 20px;
+}
+
+.level0-weight, .level0-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.level1-weight, .level1-title {
+  font-size: 1.15rem;
+  font-weight: 400;
+}

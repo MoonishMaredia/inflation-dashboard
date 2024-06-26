@@ -31,7 +31,17 @@ export default function OptionsMenu() {
     const [monthEnd, setMonthEnd] = useState('');
     const [yearStart, setYearStart] = useState('');
     const [yearEnd, setYearEnd] = useState('');
-    const [addedSeries, setAddedSeries] = useState([])
+    const [selectedSeries, setSelectedSeries] = useState([])
+    
+    function handleCheck(seriesId) {
+        setSelectedSeries(prevSeries=>{
+            if(prevSeries.includes(seriesId)) {
+                return prevSeries.filter(id=>id!==seriesId)
+            } else {
+                return [...prevSeries, seriesId]
+            }
+        })
+    }
       
 
     return (
@@ -127,33 +137,20 @@ export default function OptionsMenu() {
                 <label>Add series</label>
                 <button className="add-series-btn" onClick={()=>setModalOpen(prev=>!prev)}>
                     <FontAwesomeIcon className="plus-icon" icon={faPlus}/>
-                    <span className="selected-pill">{addedSeries.length} selected</span>
+                    <span className="selected-pill">{selectedSeries.length} selected</span>
                 </button>
             </div>
 
             {modalOpen && 
                 <SelectModal
-                handleModal={()=>setModalOpen(prev=>!prev)}/>
+                handleModal={()=>setModalOpen(prev=>!prev)}
+                selectedSeries={selectedSeries}
+                handleCheck={handleCheck}/>
             }
 
-            {/* <div className="selector-item">
-                <label htmlFor="granularity">Specify series detail</label>
-                <Select
-                    closeMenuOnSelect={true}
-                    options={detailOptions}
-                    placeholder="Select level of detail"
-                />
-            </div>
-
-            <div className="selector-item">
-                <label htmlFor="granularity">Optional - Add individual categories</label>
-                <Select
-                    closeMenuOnSelect={false}
-                    isMulti
-                    options={groupedOptions}
-                    placeholder="Select additional categories"
-                />
-            </div> */}
+            <button className="generate-btn">
+                Generate Chart
+            </button>
 
         </div>
     )

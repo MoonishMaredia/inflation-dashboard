@@ -1,18 +1,18 @@
-import Header from './components/Header'
-import MenuSelector from './components/ToggleSelector'
-import OptionsMenu from './components/OptionsMenu'
-import {useState} from 'react'
+import FinalLayout from './components/FinalLayout'
+import { useState, useEffect } from 'react'
+import { InputProvider, useInput } from './components/InputContext'
+import { ResultsProvider, useResults } from './components/ResultsContext'
 
 
 function App() {
 
+
   return (
-    <div className="">
-      <header className="">
-        <Header></Header>
-        <OptionsMenu />
-      </header>
-    </div>
+      <InputProvider>
+        <ResultsProvider> 
+          <FinalLayout />
+        </ResultsProvider>
+      </InputProvider>
   );
 }
 

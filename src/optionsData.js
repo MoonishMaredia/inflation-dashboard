@@ -1,7 +1,8 @@
 
 export const typeOptions = [
-    { value: 'CPI Level', label: 'CPI Level' },
-    { value: 'CPI Rate', label: 'CPI Rate' },
+    { value: 'Monthly Rate', label: 'Monthly % Change' },
+    { value: 'Annual Rate', label: 'Annual % Change' },
+    { value: 'Level', label:  'Level' },
   ]
 
 export const granularityOptions = [

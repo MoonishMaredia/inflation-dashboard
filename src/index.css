@@ -5,6 +5,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .header {
   display: flex;
   width: 100%;
@@ -12,42 +23,69 @@ body {
   color: black;
   font-weight: 600;
   text-align: left;
-  padding: 0rem 20px;
+  padding: 0rem 10px;
   font-size: 1.75rem;
   border-bottom: 2px solid black;
 }
 
 .header > p {
   margin-left: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .header-logo {
   max-width: 50px;
 }
 
-.options-menu {
+.inputs-menu {
   display: flex;
   flex-direction: column;
-  margin-left: 2%;
+  width: 90%;
+}
+
+.options-menu {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1.5fr 1.5fr 1fr;
+  gap: 10px;
   background-color: white;
-  width: 20%;
-  min-width: 300px;
-  border: 1px solid rgb(203 213 225);
-  margin-top: 2%;
-  border-radius: 3px;
+  border: 1px solid rgb(203, 213, 225);
+  border-radius: 6px;
+  justify-content: center;
+  margin-top: 1%;
+  padding: 1.75rem 2.5rem;
+  padding-bottom: 2rem;
+}
+
+.options-menu-compare {
+  display: grid;
+  align-self: center;
+  width: 60%;
+  grid-template-columns: 1.5fr 1.5fr 1fr;
+  gap: 10px;
+  background-color: white;
+  border: 1px solid rgb(203, 213, 225);
+  border-radius: 6px;
+  justify-content: center;
+  margin-top: 1%;
+  padding: 1.75rem 2.5rem;
+  padding-bottom: 2rem;
 }
 
 .menu-selector {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   text-align: center;
-  margin-top: 2%;
+  margin-top: 1%;
+  width: 35%;
+}
+
+.menu-selector > h3 {
+  font-size: 1.15rem;
 }
 
 .unselected-menu-item, .selected-menu-item {
   border: 1px solid rgb(203 213 225);
-  padding: 0.75rem 0px;
+  padding: 1.15rem 0px;
   cursor: pointer;
   font-size: 1rem;
   width: 40%;
@@ -63,12 +101,9 @@ body {
 .selector-item {
   width: 80%;
   align-self: center;
-  padding: 0.25rem;
   display: flex;
   flex-direction: column;
   border-radius: 5px; 
-  box-sizing: border-box;
-  margin-top: 3%;
 }
 
 .selector-item > label {
@@ -98,14 +133,13 @@ body {
 
 .add-series-btn {
   display: flex;
-  align-self: center;
   width: 100%;
-  padding: 0.75rem 0;
   background-color: white;
   cursor: pointer;
   border-radius: 5px;
   font-weight: 600;
   border: 1px solid rgb(203 213 225);
+  padding: 0.5rem 0.25rem;
 }
 
 .add-series-btn:hover {
@@ -130,8 +164,8 @@ body {
 
 .selected-pill {
   background-color: rgb(203 213 225);
-  padding-top: 0.4rem;
-  padding-bottom: 0.4rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
   padding-left: 0.75rem;
   padding-right: 1.1rem;
   border-radius: 0.5rem;
@@ -317,21 +351,34 @@ body {
     margin-top: 0.25rem;
 }
 
+
 .generate-btn {
-  width: 80%;
-  align-self: center;
-  background-color: rgb(71 85 105);
+  background-color: rgb(71, 85, 105);
   color: white;
   border: none;
-  padding: 1rem 0.75rem;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 600;
+  margin-top: auto; /* Vertically center the button */
+  margin-bottom: auto; /* Vertically center the button */
+  padding: 1.25rem 0rem;
 }
 
 .generate-btn:hover {
   background-color: rgb(30 41 59);
+}
+
+.error-message {
+  color: red;
+  font-size: 0.75rem;
+  margin: 0;
+  margin-top: 0.5rem;
+}
+
+.my-plotly-chart {
+  border: 2px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
 }

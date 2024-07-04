@@ -24,7 +24,7 @@ export default function SelectModal({handleModal, selectedSeries, handleCheck}) 
             <div className="modal-content">
                 {seriesData.map((series,index)=> {
                     return <CategoryCard
-                        id={index}
+                        key={index}
                         level={series.level}
                         series_id={series.series_id}
                         title={series.series}
@@ -38,8 +38,9 @@ export default function SelectModal({handleModal, selectedSeries, handleCheck}) 
             <div className="modal-footer">
                 <div className="modal-footer-elements">
                     <div className="modal-selected-pills">
-                        {selectedSeries.map(id=>{
+                        {selectedSeries.map((id, index)=>{
                             return <SelectedPill
+                                key={index}
                                 series_desc={seriesObj[id].series}
                             />
                         })

@@ -14,7 +14,10 @@ export default function FinalLayout() {
     }
 
     const {inputFields, setInputFields} = useInput();
+    const {results, setResults} = useResults();
+
     console.log(inputFields)
+    console.log(results)
 
 return (
     <div className="main">
@@ -27,7 +30,9 @@ return (
                 toggleText2={"Compare"}/>
             <OptionsMenu 
                 isCompare={isCompare}/>
-            <MyPlotlyChart/>
+        </div>
+        <div className="chart-container">
+            <MyPlotlyChart />
         </div>
     </div>
     )}

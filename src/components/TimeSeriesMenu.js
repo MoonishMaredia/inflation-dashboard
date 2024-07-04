@@ -1,19 +1,17 @@
 import {useState, useEffect} from 'react'
+import axios from 'axios'
 import Select from 'react-select'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import SelectModal from "./SelectModal";
-import { InputContext, useInput } from "./InputContext"
+import { useInput } from "./InputContext"
+import { useResults } from "./ResultsContext"
+
 
 import {
     typeOptions,
-    granularityOptions,
     monthOptions,
-    colourOptions,
-    foodOptions,
-    groupedOptions,
     yearOptions,
-    detailOptions
 } from '../optionsData.js'
 
 
@@ -21,6 +19,8 @@ export default function TimeSeriesMenu() {
 
 
     const { inputFields, setInputFields } = useInput();
+    const { results, setResults } = useResults();
+
 
     const [modalOpen, setModalOpen] = useState(false)
     const [seriesType, setSeriesType] = useState('');
@@ -81,18 +81,22 @@ export default function TimeSeriesMenu() {
         return Object.keys(newErrors).length === 0;
       }
 
-      function handleGenerateChart() {
+      async function handleGenerateChart() {
         if (validateForm()) {
           // Proceed with generating the chart
           setInputFields({
             chartType:"series",
-            type:seriesType.value,
+            seriesType:seriesType.value,
             yearStart:yearStart.value,
             yearEnd:yearEnd.value,
             monthStart:monthStart.value,
             monthEnd:monthEnd.value,
-            selectedSeries:selectedSeries
+            seriesIds:selectedSeries
           })
+          console.log(process.env.INFLATION_APP_API_URL)
+          const data = await axios.post("http://0.0.0.0:10000"+"/api/v1/timeseries", inputFields)
+          .then( res => res.data)
+          setResults(data)
         }
       }
       

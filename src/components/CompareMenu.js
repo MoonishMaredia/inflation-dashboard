@@ -3,6 +3,9 @@ import Select from 'react-select'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { InputContext, useInput } from "./InputContext"
+import axios from 'axios'
+import { useResults } from "./ResultsContext"
+
 
 import {
     typeOptions,
@@ -16,7 +19,7 @@ import {
 } from '../optionsData.js'
 
 
-export default function TimeSeriesMenu() {
+export default function CompareMenu() {
 
 
     const { inputFields, setInputFields } = useInput();
@@ -25,6 +28,8 @@ export default function TimeSeriesMenu() {
     const [yearStart, setYearStart] = useState('');
     const [yearEnd, setYearEnd] = useState('');
     const [errors, setErrors] = useState({});
+    const { results, setResults } = useResults(null);
+
     
     function validateForm() {
         const monthNames = ["January", "February", "March", "April", 
@@ -53,17 +58,37 @@ export default function TimeSeriesMenu() {
         return Object.keys(newErrors).length === 0;
       }
 
+      async function makeApiCall(inputFields) {
+        try {
+          console.log(process.env.REACT_APP_INFLATION_URL);
+          const data = await axios.post("http://0.0.0.0:10000" + "/api/v1/compare", inputFields)
+            .then(res => res.data);
+            setResults(prev=>({...prev, 'compare':data}));
+        } catch (error) {
+          console.error("Error making API call:", error);
+        }
+      }
+      
       function handleGenerateChart() {
         if (validateForm()) {
           setInputFields({
-            chartType:"compare",
-            yearStart:yearStart.value,
-            yearEnd:yearEnd.value,
-            monthStart:monthStart.value,
-            monthEnd:monthEnd.value,
-          })
+            chartType: "compare",
+            yearStart: yearStart.value,
+            yearEnd: yearEnd.value,
+            monthStart: monthStart.value,
+            monthEnd: monthEnd.value,
+          });
         }
       }
+      
+      useEffect(() => {
+        const fetchData = async () => {
+          if (inputFields.chartType) { // Ensure inputFields are set before making the API call
+            await makeApiCall(inputFields);
+          }
+        };
+        fetchData();
+      }, [inputFields]); // Dependency array to watch for changes in inputFields
       
     return (
         <div className="options-menu-compare">

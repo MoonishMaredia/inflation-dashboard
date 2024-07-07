@@ -54,18 +54,18 @@ const MyPlotlyChart = () => {
   ];
 
   const layout = {
-    xaxis: {
-      title: 'Date',
-    },
-    yaxis: {
-      title: 'Value',
-    },
+    // xaxis: {
+    //   title: 'Date',
+    // },
+    // yaxis: {
+    //   title: 'Value',
+    // },
     margin: {
       l: 50,
       r: 50,
       b: 50,
       t: 50,
-      pad: 4
+      // pad: 4
     },
     legend: {
       x: 1,
@@ -88,7 +88,7 @@ const MyPlotlyChart = () => {
         layout={layout}
         config={config}
         useResizeHandler={true}
-        style={{ width: "90%", height: "100%" }}
+        style={{ width: "100%", height: "100%" }}
       />
   );
 };

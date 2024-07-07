@@ -377,7 +377,7 @@ body {
 }
 
 .chart-container {
-  width: 90%;
+  /* width: 90%; */
   height: 800px; /* Or whatever height you want */
   border: 1px solid black;
   align-self: center;
@@ -387,9 +387,51 @@ body {
 }
 
 .my-multi-series-line-chart {
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 /* .chart-component {
   width: 100%;
 } */
+
+.item1 { grid-area: chart; }
+.item2 { grid-area: y-axis; }
+.item3 { grid-area: x-start; }
+.item4 { grid-area: x-end; }
+.item5 { grid-area: legend; }
+.item6 { grid-area: type; }
+
+.grid-container {
+  display: grid;
+  height: 92vh;
+  width: 100%;
+  grid-template-areas:
+    'y-axis y-axis type type type type type type legend legend'
+    'y-axis y-axis chart chart chart chart chart chart legend legend'
+    'y-axis y-axis chart chart chart chart chart chart legend legend'
+    'y-axis y-axis chart chart chart chart chart chart legend legend'
+    'y-axis y-axis chart chart chart chart chart chart legend legend'
+    'y-axis y-axis chart chart chart chart chart chart legend legend'
+    'y-axis y-axis chart chart chart chart chart chart legend legend'
+    'y-axis y-axis chart chart chart chart chart chart legend legend'
+    'y-axis y-axis chart chart chart chart chart chart legend legend'
+    'y-axis y-axis x-start x-start x-start x-end x-end x-end legend legend';
+  grid-template-rows: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+  grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+  gap: 10px; /* Optional: Adjust the gap between grid items */
+  /* background-color: #2196F3; */
+  padding: 10px; /* Optional: Adjust the padding */
+  box-sizing: border-box;
+  align-self: center;
+}
+
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  /* padding: 20px 0; */
+  font-size: 30px;
+}
+
+.item2 {
+  margin-top: 9.2vh;
+}

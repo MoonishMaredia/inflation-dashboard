@@ -56,7 +56,6 @@ return (
                     prefixText="I want to see:"
                 />
             </div>
-
         </div>
         {/* <div className="main-options">
             <ToggleSelector 

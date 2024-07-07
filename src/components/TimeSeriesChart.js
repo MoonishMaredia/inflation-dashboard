@@ -54,12 +54,16 @@ const MyPlotlyChart = () => {
   ];
 
   const layout = {
-    // xaxis: {
-    //   title: 'Date',
-    // },
-    // yaxis: {
-    //   title: 'Value',
-    // },
+    xaxis: {
+      tickvals: ['2024-01-01', '2024-04-01'], // Specify the positions of the ticks you want to display
+      ticktext: ['First', 'Last'], // Specify the labels for the ticks
+    },
+    yaxis: {
+      showgrid:true,
+      gridwidth: 1,
+      tickvals: [5], // Show only the first tick
+      values:false,
+    },
     margin: {
       l: 50,
       r: 50,

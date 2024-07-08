@@ -2,9 +2,9 @@ import {useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import CategoryCard from './CategoryCard';
+import SelectedPill from './SelectedPill';
 import { seriesData } from '../optionsData';
 import { seriesObj } from '../optionsData'
-import SelectedPill from './SelectedPill';
 
 export default function SelectModal({handleModal, selectedSeries, handleCheck}) {
 

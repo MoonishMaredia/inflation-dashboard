@@ -8,12 +8,13 @@ function getStyles(isDropdownSet) {
           ...provided,
           textAlign:'left',
           fontSize:'16px',    
-          border: '2px solid black',  
-          backgroundColor: isDropdownSet ? '#E0F2FE' : '#ffe200',
-          boxShadow: state.isFocused ? '0 0 0 1px black' : 'none',
-          '&:hover': {
-            border: '2px solid black'
-          },
+          // border: '2px solid black',  
+          backgroundColor: isDropdownSet ? 'rgb(248 250 252)' : 'rgb(248 250 252)',
+          border: isDropdownSet ? '1.5px solid black' : '1.5px solid red',
+          boxShadow: state.isFocused ? 'none' : 'none',
+          // '&:hover': {
+          //   border: '2px solid black'
+          // },
         }),
         placeholder: (provided) => ({
           ...provided,
@@ -22,11 +23,11 @@ function getStyles(isDropdownSet) {
         }),
         indicatorSeparator: (provided) => ({
           ...provided,
-          backgroundColor: 'black'  // Color of the indicator separator
+          // backgroundColor: 'black'  // Color of the indicator separator
         }),
         dropdownIndicator: (provided) => ({
           ...provided,
-          color: 'black',  // Color of the dropdown arrow
+          // color: 'black',  // Color of the dropdown arrow
           '&:hover': {
               color: 'black'
             },
@@ -34,14 +35,14 @@ function getStyles(isDropdownSet) {
         option: (provided) => ({
           ...provided,
           textAlign: 'left',
-          fontWeight:'500',
+          fontWeight:'400',
           fontSize: '16px'  // Set the font size of the options
         })
       }
     return customStyles
 };
 
-export default function Dropdown({ placeholderText, optionsArr, stateVar, setStateVar, prefixText="" }) {
+export default function Dropdown({ placeholderText, optionsArr, stateVar, setStateVar, prefixText="", menuPlacement="bottom"}) {
     
   const [isDropdownSet, setDropdown] = useState(false);
 
@@ -56,6 +57,7 @@ export default function Dropdown({ placeholderText, optionsArr, stateVar, setSta
         options={optionsArr}
         placeholder={placeholderText}
         styles={getStyles(isDropdownSet)}
+        menuPlacement={menuPlacement}
         />
   );
 }

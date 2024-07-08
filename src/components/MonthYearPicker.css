@@ -1,0 +1,77 @@
+.month-year-picker {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .picker-input {
+    min-width: 200px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 16px;
+    border: 1px solid black;
+    cursor: pointer;
+    background-color: rgb(248 250 252);
+    border-radius: 5px;  
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.picker-input-border {
+    border: 1.5px solid red;
+}
+  
+  .picker-dropdown {
+    position: absolute;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); /* Adjust shadow to appear above */
+    z-index: 1000; /* Ensure dropdown is above other content */
+  }
+  
+  .picker-dropdown-top {
+    bottom: 100%;
+  }
+  
+  .picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background-color: black;
+    color: white;
+    font-size: 20px; /* Larger font size for year */
+  }
+  
+  .picker-header button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 24px; /* Larger font size for buttons */
+  }
+  
+  .picker-months {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .picker-months .month {
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px; /* Smaller font size for months */
+  }
+  
+  .picker-months .month:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .picker-months .month.disabled {
+    color: #ccc;
+    pointer-events: none;
+  }

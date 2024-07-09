@@ -1,43 +1,76 @@
 import Header from './Header'
-import ToggleSelector from "./ToggleSelector"
-import OptionsMenu from './OptionsMenu'
 import { useState, useEffect } from 'react'
 import { useInput } from './InputContext'
 import { useResults } from './ResultsContext'
-import MyPlotlyChart from './TimeSeriesChart'
-import Dropdown from './Dropdown'
-import MonthYearPicker from './MonthYearPicker';
-import SelectSeries from './SelectSeries'
+import LandingView from './LandingView'
+import SeriesView from './SeriesOptionsView'
+import NoOptionsView from './NoOptionsView'
+import CompareView from './CompareOptionsView'
+
+import {
+    chartTypeOptions,
+    metricOptions
+} from '../optionsData'
 
 export default function FinalLayout() { 
 
+    const saveToSessionStorage = (key, value) => {
+        sessionStorage.setItem(key, JSON.stringify(value));
+      };
+
+    const getFromSessionStorage = (key) => {
+    const storedValue = sessionStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : null;
+    };
+
+
     const [showOptions, setShowOptions] = useState(true)
+    const [fromDate, setFromDate] = useState(getFromSessionStorage('fromDate') || new Date());
+    const [toDate, setToDate] = useState(getFromSessionStorage('toDate') || new Date());
+    const [selectedSeries, setSelectedSeries] = useState(getFromSessionStorage('selectedSeries') || []);
+    const[metric, setMetric] = useState(getFromSessionStorage('metric'))  
+    const[chartType, setChartType] = useState(getFromSessionStorage('chartType'))
+    const minDate = new Date(1999, 1, 1);
+    const maxDate = new Date(2024, 5, 1);
+    const [layoutScenario, setLayoutScenario] = useState("landing-view")
 
-    const [fromDate, setFromDate] = useState(new Date());
-    const [toDate, setToDate] = useState(new Date());
-    const minDate = new Date(1999, 1, 1); // January 2020
-    const maxDate = new Date(2024, 5, 1); // December 2025
-    const [selectedSeries, setSelectedSeries] = useState([]);
+      useEffect(() => {
+        const dataToStore = {
+          fromDate,
+          toDate,
+          selectedSeries,
+          metric,
+          chartType,
+        };
+        saveToSessionStorage('myComponentData', dataToStore);
+      }, [fromDate, toDate, selectedSeries, metric, chartType]);
 
-    const [isCompare, setIsCompare] = useState(false)
-    function toggleMenu() {
-      setIsCompare(prev=>!prev)
+
+    useEffect(()=>{
+        if(!showOptions) {
+            setLayoutScenario("no-options-view")
+        } else {
+            if(chartType) {
+                if(chartType.value==="time-series") {
+                    setLayoutScenario("series-view")
+                } else if(chartType.value==="compare") {
+                    setLayoutScenario("compare-view")
+                }
+            } else {
+                setLayoutScenario("landing-view")
+            }
+        }
+    }, [showOptions, chartType])
+
+    function handleCheck(seriesId) {
+        setSelectedSeries(prevSeries=>{
+            if(prevSeries.includes(seriesId)) {
+                return prevSeries.filter(id=>id!==seriesId)
+            } else {
+                return [...prevSeries, seriesId]
+            }
+        })
     }
-
-    const {inputFields, setInputFields} = useInput();
-    const {results, setResults} = useResults();
-
-    const[metric, setMetric] = useState(null)
-    let metricOptionsArr = [
-        { value: 'Level', label:  'CPI Level' },
-        { value: 'Monthly Rate', label: 'MoM % Change' },
-        { value: 'Annual Rate', label: 'YoY % Change' }
-      ]
-
-    let typeOptionsArr = [
-        { value: 'time-series', label: 'Plot a line chart of CPI level or % change over time for my selected set of CPI categories' },
-        { value: 'compare', label: 'Create a waterfall chart that isolates the drivers of CPI between two times periods' },
-      ]
 
 return (
     <div className="main">
@@ -45,55 +78,48 @@ return (
             showOptions={showOptions}
             setShowOptions={setShowOptions}
         />
-        <div class="grid-container">
-            <div className="item1">
-                <MyPlotlyChart />
-            </div>
-            <div className="item2">
-                <Dropdown
-                placeholderText="Select metric"
-                optionsArr={metricOptionsArr}
-                stateVar={metric}
-                setStateVar={setMetric}
-                />
-            </div>
-            <div class="item3">
-                <label>Select series start date:</label>
-                    <MonthYearPicker 
-                        onDateChange={setFromDate}
-                        defaultDate={minDate} 
-                        minDate={minDate} 
-                        maxDate={maxDate} 
-                        openPosition=''
-                        placeholderText={"Select a series end date"}
-                        pickerPosition={"top"}/>
-            </div>  
-            <div class="item4">
-                <label>Select series end date:</label>
-                <MonthYearPicker 
-                    onDateChange={setFromDate}
-                    defaultDate={maxDate} 
-                    minDate={minDate} 
-                    maxDate={maxDate} 
-                    openPosition=''
-                    placeholderText={"Select a series end date"}
-                    pickerPosition={"top"}/>
-            </div>  
-            <div class="item5">
-                <SelectSeries 
-                    selectedSeries={selectedSeries}
-                />
-            </div>
-            <div class="item6">
-                <Dropdown
-                    placeholderText="Select type of chart"
-                    optionsArr={typeOptionsArr}
-                    stateVar={metric}
-                    setStateVar={setMetric}
-                    prefixText="I want to see:"
-                />
-            </div>
-        </div>
+        {layoutScenario==="landing-view" &&
+            <LandingView
+                chartTypeOptions={chartTypeOptions}
+                chartTypeStateVar={chartType}
+                setChartTypeStateVar={setChartType}/>
+        }
+
+        {layoutScenario==="series-view" &&
+            <SeriesView 
+                metricOptionsArr={metricOptions}
+                metricsVar={metric}
+                setMetricStateVar={setMetric}
+                fromDateVar={fromDate}
+                setFromDateVar={setFromDate}
+                minDate={minDate}
+                maxDate={maxDate}
+                toDateVar={toDate}
+                setToDateVar={setToDate}
+                selectedSeries={selectedSeries}
+                handleCheck={handleCheck}
+                chartType={chartType}
+                chartTypeOptions={chartTypeOptions}
+                setChartTypeStateVar={setChartType}/>
+        }
+
+        {layoutScenario==="compare-view" &&
+            <CompareView 
+                setFromDateVar={setFromDate}
+                minDate={minDate}
+                maxDate={maxDate}
+                setToDateVar={setToDate}
+                selectedSeries={selectedSeries}
+                handleCheck={handleCheck}
+                chartTypeOptions={chartTypeOptions}
+                setChartTypeStateVar={setChartType}/>
+        }
+
+        {layoutScenario==="no-options-view" && 
+            <NoOptionsView
+            />
+        }
+
         {/* <div className="main-options">
             <ToggleSelector 
                 isCompare={isCompare}

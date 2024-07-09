@@ -161,7 +161,7 @@ body {
   border-radius: 5px;
   font-weight: 600;
   border: 1px solid rgb(203 213 225);
-  padding: 0.5rem 0.25rem;
+  padding: 0.75rem 0.25rem;
 }
 
 .add-series-btn:hover {
@@ -186,14 +186,14 @@ body {
 }
 
 .selected-pill {
-  /* background-color: rgb(203 213 225); */
+  background-color: rgb(203 213 225);
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
   padding-left: 0.75rem;
   padding-right: 1.1rem;
   border-radius: 0.5rem;
   font-weight: 400;
-  font-size: 1rem;
+  font-size: 0.85rem;
 }
 
 .modal {
@@ -235,8 +235,10 @@ body {
 
 .modal-content {
   flex: 1;
+  max-height: 68vh;
   overflow-y: auto;
   padding: 1% 2%;
+  border-bottom: 2px solid gray;
 }
 
 .modal-footer {
@@ -267,9 +269,9 @@ body {
   margin-left: 5%;
   margin-right: 5%;
   justify-content: space-between;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid gray;
   padding-bottom: 0;
   margin-bottom: 0;
 }
@@ -315,32 +317,32 @@ body {
 }
 
 .level2-title {
-  margin-left: 40px;
+  margin-left: 35px;
 }
 
 .level3-title {
-  margin-left: 60px;
+  margin-left: 50px;
 }
 
 .level0-weight, .level0-title {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
 .level1-weight, .level1-title {
-  font-size: 1.15rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: rgb(51 65 85);
 }
 
 .level2-weight, .level2-title {
-  font-size: 1.05rem;
+  font-size: 0.85rem;
   font-weight: 400;
   color: rgb(71 85 105);
 }
 
 .level3-weight, .level3-title {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 300;
 }
 
@@ -425,7 +427,7 @@ body {
 .item5 { grid-area: legend; }
 .item6 { grid-area: type; }
 
-.grid-container {
+.series-view {
   display: grid;
   height: 92vh;
   width: 100%;
@@ -452,15 +454,111 @@ body {
   align-self: center;
 }
 
-.grid-container > div {
+.compare-view {
+  display: grid;
+  height: 92vh;
+  width: 100%;
+  grid-template-areas:
+    'type type type type type type type type type type'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'x-start x-start x-start x-start x-end x-end x-end x-end x-end x-end'
+    'x-start x-start x-start x-start x-end x-end x-end x-end x-end x-end';
+  grid-template-rows: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+  grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+  gap: 10px; /* Optional: Adjust the gap between grid items */
+  /* background-color: #2196F3; */
+  padding: 10px; /* Optional: Adjust the padding */
+  box-sizing: border-box;
+  align-self: center;
+}
+
+.no-options-view {
+  display: grid;
+  height: 92vh;
+  width: 100%;
+  grid-template-areas:
+    'chart chart'
+    'chart chart';
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  /* background-color: #2196F3; */
+  padding: 10px; /* Optional: Adjust the padding */
+  box-sizing: border-box;
+  align-self: center;
+}
+
+.landing-view-grid {
+  display: grid;
+  height: 92vh;
+  width: 100%;
+  grid-template-areas:
+    'type type type type type type type type type type'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart'
+    'chart chart chart chart chart chart chart chart chart chart';
+  grid-template-rows: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+  grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+  gap: 10px; /* Optional: Adjust the gap between grid items */
+  /* background-color: #2196F3; */
+  padding: 10px; /* Optional: Adjust the padding */
+  box-sizing: border-box;
+  align-self: center;
+}
+
+
+/* .grid-container3 {
+  display: grid;
+  height: 92vh;
+  width: 100%;
+  grid-template-areas:
+    'y-axis type type type type type type legend legend legend'
+    'y-axis chart chart chart chart chart chart legend legend legend'
+    'y-axis chart chart chart chart chart chart legend legend legend'
+    'y-axis chart chart chart chart chart chart legend legend legend'
+    'y-axis chart chart chart chart chart chart legend legend legend'
+    'y-axis chart chart chart chart chart chart legend legend legend'
+    'y-axis chart chart chart chart chart chart legend legend legend'
+    'y-axis chart chart chart chart chart chart legend legend legend'
+    'y-axis chart chart chart chart chart chart legend legend legend'
+    'y-axis chart chart chart chart chart chart legend legend legend'
+    'y-axis chart chart chart chart chart chart legend legend legend'
+    'y-axis x-start x-start x-start x-end x-end x-end legend legend legend'
+    'y-axis x-start x-start x-start x-end x-end x-end legend legend legend';
+  grid-template-rows: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+  grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
+  gap: 10px; 
+  background-color: #2196F3;
+  padding: 10px; 
+  box-sizing: border-box;
+  align-self: center;
+} */
+
+.series-view > div {
   background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
-  /* padding: 20px 0; */
   font-size: 30px;
 }
 
 .item2 {
-  margin-top: 6vh;
+  margin-top: 5.5vh;
 }
 
 .item3 {
@@ -485,7 +583,7 @@ body {
 }
 
 .item5 {
-  margin-top: 6vh;
+  margin-top: 5.5vh;
 }
 
 .item5 > button {

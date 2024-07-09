@@ -10,7 +10,7 @@ function getStyles(isDropdownSet) {
           fontSize:'16px',    
           // border: '2px solid black',  
           backgroundColor: isDropdownSet ? 'rgb(248 250 252)' : 'rgb(248 250 252)',
-          border: isDropdownSet ? '1.5px solid black' : '1.5px solid red',
+          border: isDropdownSet ? '2px solid black' : '2px solid red',
           boxShadow: state.isFocused ? 'none' : 'none',
           // '&:hover': {
           //   border: '2px solid black'
@@ -42,9 +42,9 @@ function getStyles(isDropdownSet) {
     return customStyles
 };
 
-export default function Dropdown({ placeholderText, optionsArr, stateVar, setStateVar, prefixText="", menuPlacement="bottom"}) {
-    
-  const [isDropdownSet, setDropdown] = useState(false);
+export default function Dropdown({ placeholderText, optionsArr, stateVar, setStateVar, menuPlacement="bottom"}) {
+  
+  const [isDropdownSet, setDropdown] = useState(stateVar ? true : false);
 
   const handleSelection = (selectedOption) => {
     setStateVar(selectedOption);
@@ -53,11 +53,12 @@ export default function Dropdown({ placeholderText, optionsArr, stateVar, setSta
 
   return (
         <Select 
-        onChange={handleSelection} 
-        options={optionsArr}
-        placeholder={placeholderText}
-        styles={getStyles(isDropdownSet)}
-        menuPlacement={menuPlacement}
+          value={stateVar}
+          onChange={handleSelection} 
+          options={optionsArr}
+          placeholder={placeholderText}
+          styles={getStyles(isDropdownSet)}
+          menuPlacement={menuPlacement}
         />
   );
 }

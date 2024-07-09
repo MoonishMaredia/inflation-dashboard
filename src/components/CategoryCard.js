@@ -31,7 +31,7 @@ export default function CategoryCard({level, title, series_id, weight, handleChe
                     />
                 <p className={getClassName(level, "title")}>{title}</p>
             </div>
-            <p className={getClassName(level, "weight")}>{weight} %</p>
+            <p className={getClassName(level, "weight")}>{weight}</p>
         </div>
     )
 }

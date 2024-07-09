@@ -1,9 +1,19 @@
+export const chartTypeOptions = [
+  { value: 'time-series', label: 'Plot a line chart of CPI level (or rate) over time for my selected set of CPI categories' },
+  { value: 'compare', label: 'Create a waterfall chart that isolates the drivers of CPI between two times periods' },
+]
 
 export const typeOptions = [
     { value: 'Monthly Rate', label: 'Monthly % Change' },
     { value: 'Annual Rate', label: 'Annual % Change' },
     { value: 'Level', label:  'Level' },
   ]
+
+export const metricOptions = [
+  { value: 'Level', label:  'CPI Level' },
+  { value: 'Monthly Rate', label: 'MoM % Change' },
+  { value: 'Annual Rate', label: 'YoY % Change' }
+]
 
 export const granularityOptions = [
     { value: 'Monthly', label: 'Monthly' },

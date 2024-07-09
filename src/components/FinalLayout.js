@@ -6,6 +6,8 @@ import LandingView from './LandingView'
 import SeriesView from './SeriesOptionsView'
 import NoOptionsView from './NoOptionsView'
 import CompareView from './CompareOptionsView'
+import SelectionMenu from './SelectionMenu'
+import MyPlotlyChart from './TimeSeriesChart'
 
 import {
     chartTypeOptions,
@@ -14,37 +16,15 @@ import {
 
 export default function FinalLayout() { 
 
-    const saveToSessionStorage = (key, value) => {
-        sessionStorage.setItem(key, JSON.stringify(value));
-      };
-
-    const getFromSessionStorage = (key) => {
-    const storedValue = sessionStorage.getItem(key);
-    return storedValue ? JSON.parse(storedValue) : null;
-    };
-
-
     const [showOptions, setShowOptions] = useState(true)
-    const [fromDate, setFromDate] = useState(getFromSessionStorage('fromDate') || new Date());
-    const [toDate, setToDate] = useState(getFromSessionStorage('toDate') || new Date());
-    const [selectedSeries, setSelectedSeries] = useState(getFromSessionStorage('selectedSeries') || []);
-    const[metric, setMetric] = useState(getFromSessionStorage('metric'))  
-    const[chartType, setChartType] = useState(getFromSessionStorage('chartType'))
+    const [fromDate, setFromDate] = useState(new Date());
+    const [toDate, setToDate] = useState(new Date());
+    const [selectedSeries, setSelectedSeries] = useState([]);
+    const[metric, setMetric] = useState(null)  
+    const[chartType, setChartType] = useState(null)
     const minDate = new Date(1999, 1, 1);
     const maxDate = new Date(2024, 5, 1);
     const [layoutScenario, setLayoutScenario] = useState("landing-view")
-
-      useEffect(() => {
-        const dataToStore = {
-          fromDate,
-          toDate,
-          selectedSeries,
-          metric,
-          chartType,
-        };
-        saveToSessionStorage('myComponentData', dataToStore);
-      }, [fromDate, toDate, selectedSeries, metric, chartType]);
-
 
     useEffect(()=>{
         if(!showOptions) {
@@ -62,23 +42,22 @@ export default function FinalLayout() {
         }
     }, [showOptions, chartType])
 
-    function handleCheck(seriesId) {
-        setSelectedSeries(prevSeries=>{
-            if(prevSeries.includes(seriesId)) {
-                return prevSeries.filter(id=>id!==seriesId)
-            } else {
-                return [...prevSeries, seriesId]
-            }
-        })
-    }
-
 return (
     <div className="main">
         <Header
             showOptions={showOptions}
             setShowOptions={setShowOptions}
         />
-        {layoutScenario==="landing-view" &&
+        <div className="selection-view">
+            <SelectionMenu
+            />
+            <div className="item1">
+                <MyPlotlyChart />
+            </div>
+
+        </div>
+
+        {/* {layoutScenario==="landing-view" &&
             <LandingView
                 chartTypeOptions={chartTypeOptions}
                 chartTypeStateVar={chartType}
@@ -118,7 +97,7 @@ return (
         {layoutScenario==="no-options-view" && 
             <NoOptionsView
             />
-        }
+        } */}
 
         {/* <div className="main-options">
             <ToggleSelector 

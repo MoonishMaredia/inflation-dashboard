@@ -1,14 +1,13 @@
 .month-year-picker {
     position: relative;
-    display: inline-block;
+    display: flex;  
+    /* margin-top: 5px; */
   }
   
   .picker-input {
-    min-width: 200px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    width: 100%;
     font-size: 16px;
-    border: 1px solid black;
+    border: 2px solid gray;
     cursor: pointer;
     background-color: rgb(248 250 252);
     border-radius: 5px;  
@@ -19,12 +18,17 @@
 }
 
 .picker-input-border {
-    border: 1.5px solid red;
+  border: 2px solid red;
+}
+
+.picker-input:hover {
+    border: 2px solid black;
 }
   
   .picker-dropdown {
     position: absolute;
     left: 0;
+    top: 50px;
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); /* Adjust shadow to appear above */

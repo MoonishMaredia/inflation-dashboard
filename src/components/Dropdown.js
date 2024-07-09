@@ -10,11 +10,12 @@ function getStyles(isDropdownSet) {
           fontSize:'16px',    
           // border: '2px solid black',  
           backgroundColor: isDropdownSet ? 'rgb(248 250 252)' : 'rgb(248 250 252)',
-          border: isDropdownSet ? '2px solid black' : '2px solid red',
+          border: isDropdownSet ? '2px solid gray' : '2px solid red',
+          cursor: 'pointer',
           boxShadow: state.isFocused ? 'none' : 'none',
-          // '&:hover': {
-          //   border: '2px solid black'
-          // },
+          '&:hover': {
+            border: '2px solid black'
+          },
         }),
         placeholder: (provided) => ({
           ...provided,

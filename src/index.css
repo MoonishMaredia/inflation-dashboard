@@ -164,12 +164,12 @@ label {
   cursor: pointer;
   border-radius: 5px;
   font-weight: 600;
-  border: 3px solid gray;
+  border: 2px solid gray;
   padding: 0.75rem 0.25rem;
 }
 
 .add-series-btn:hover {
-  background-color: rgb(248 250 252);
+  border: 2px solid black;
 }
 
 .plus-icon {
@@ -381,10 +381,6 @@ label {
     margin-top: 0.25rem;
 }
 
-.button-component {
-  width: 100%;
-}
-
 
 .generate-btn {
   background-color: rgb(71, 85, 105);
@@ -438,7 +434,7 @@ label {
 .selection-menu { grid-area: menu;}
 
 .selection-menu {
-  margin-right: 2rem;
+  margin-right: 0.5rem;
 }
 
 .menu-options {
@@ -461,6 +457,7 @@ label {
   color: black;
   cursor: pointer;
   margin-top: 10px;
+  border: 2px solid black;
 }
 
 .generate-chart-btn:hover {

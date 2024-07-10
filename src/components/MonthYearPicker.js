@@ -3,12 +3,12 @@ import './MonthYearPicker.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faAngleDoubleLeft, faAngleDoubleRight, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
-const MonthYearPicker = ({ onDateChange, defaultDate, minDate, setMinDate, maxDate, placeholderText, 
+const MonthYearPicker = ({existingDate, onDateChange, defaultDate, minDate, setMinDate, maxDate, placeholderText, 
   dateType = "", pickerPosition="" }) => {
     
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(defaultDate);
-  const [isSelected, setIsSelected] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(existingDate ? existingDate : defaultDate);
+  const [isSelected, setIsSelected] = useState(existingDate ? true : false);
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',

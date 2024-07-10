@@ -35,6 +35,28 @@ export const monthOptions = [
     { value: '12', label: 'December' }
 ];
 
+export const monthNames = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+]
+
+export const monthToString = {
+  "January": "01",
+  "February": "02",
+  "March": "03",
+  "April": "04",
+  "May": "05",
+  "June": "06",
+  "July": "07",
+  "August": "08",
+  "September": "09",
+  "October": "10",
+  "November": "11",
+  "December": "12"
+};
+
+
+
 export const yearOptions = [];
 for (let i = 1999; i <= new Date().getFullYear(); i++) {
     yearOptions.push({ value: i.toString(), label: i.toString() });

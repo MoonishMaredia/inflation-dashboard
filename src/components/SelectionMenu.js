@@ -1,24 +1,21 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import Dropdown from './Dropdown'
 import MyPlotlyChart from './TimeSeriesChart'
 import MonthYearPicker from './MonthYearPicker'
 import SelectSeries from './SelectSeries'
-import {
-    chartTypeOptions,
-    metricOptions
-} from '../optionsData'
-import ButtonComponent from './ButtonComponent'
+import {chartTypeOptions, metricOptions, monthNames, monthToString} from '../optionsData'
+import {getSeriesData, getCompareData} from '../utils/api.js';
+import { useInput } from './InputContext'
+import { useResults } from './ResultsContext'
 
-export default function SelectionMenu(){
+export default function SelectionMenu({fromDate, setFromDate, toDate, setToDate,
+    selectedSeries, setSelectedSeries, metric, setMetric, chartType, setChartType}){
 
-    const [fromDate, setFromDate] = useState(null);
-    const [toDate, setToDate] = useState(null);
-    const [selectedSeries, setSelectedSeries] = useState([]);
-    const[metric, setMetric] = useState(null)  
-    const[chartType, setChartType] = useState(null)
+    const [errors, setErrors] = useState({});
     const [minDate, setMinDate] = useState(new Date(1999, 1, 1));
     const maxDate = new Date(2024, 5, 1);
-    // const [isButtonEnabled, setIsButtonEnabled] = useState(false)
+    const {results, setResults} = useResults({});
+    const {chartInputs, setChartInputs} = useInput({});
 
     function handleCheck(seriesId) {
         setSelectedSeries(prevSeries=>{
@@ -30,20 +27,58 @@ export default function SelectionMenu(){
         })
     }
 
-    const isButtonEnabled = () => {
-        if (chartType.value === 'time-series') {
-          return (
-            chartType &&
-            metric &&
-            fromDate &&
-            toDate &&
-            selectedSeries.length > 0
-          );
-        } else if (chartType.value === 'compare') {
-          return chartType && fromDate && toDate;
-        }
-        return false;
+    const isButtonEnabled = (type) => {
+        if (type === 'time-series') {
+            return (chartType && metric && fromDate && toDate && selectedSeries.length > 0);
+        } else if (type === 'compare') {
+            return chartType && fromDate && toDate;
+        } return false;
       };
+
+    async function handleButtonClick() {
+        if(chartType.value==="time-series") {
+            const inputObject = {
+                chartType: "time-series",
+                seriesType: metric.value,
+                yearStart: fromDate.getFullYear(),
+                yearEnd: toDate.getFullYear(),
+                monthStart: monthToString[monthNames[fromDate.getMonth()]],
+                monthEnd: monthToString[monthNames[toDate.getMonth()]],
+                seriesIds: selectedSeries
+            }
+            setChartInputs(prev=>({
+                ...prev,
+                "time-series":inputObject
+            }))
+            const data = await getSeriesData(inputObject)
+            setResults(prev=>({
+                ...prev,
+                "time-series":data
+            }))
+
+        } else if(chartType.value==="compare") {
+            const inputObject = {
+                chartType: "time-series",
+                yearStart: fromDate.getFullYear(),
+                yearEnd: toDate.getFullYear(),
+                monthStart: monthNames[fromDate.getMonth()],
+                monthEnd: monthNames[toDate.getMonth()]
+            }
+            setChartInputs(prev=>({
+                ...prev,
+                "compare":inputObject
+            }))
+            const data = await getCompareData(inputObject)
+            setResults(prev=>({
+                ...prev,
+                "compare":data
+            }))
+
+        } else {
+            console.log("Error!")
+            return
+        }
+        }
 
         return (
             <div className="selection-menu">
@@ -63,7 +98,8 @@ export default function SelectionMenu(){
                         stateVar={metric}
                         setStateVar={setMetric}
                     />
-                        <MonthYearPicker 
+                        <MonthYearPicker
+                            existingDate={fromDate}
                             onDateChange={setFromDate}
                             defaultDate={minDate} 
                             minDate={minDate} 
@@ -73,6 +109,7 @@ export default function SelectionMenu(){
                             placeholderText={"Select a series start date"}
                         />
                         <MonthYearPicker 
+                            existingDate={toDate}
                             onDateChange={setToDate}
                             defaultDate={maxDate} 
                             setMinDate={setMinDate}
@@ -84,12 +121,11 @@ export default function SelectionMenu(){
                         selectedSeries={selectedSeries}
                         handleCheck={handleCheck}/>
 
-                    <button
-                        disabled={isButtonEnabled()}
-                        style={{ cursor: !isButtonEnabled() ? 'not-allowed' : 'pointer' }}
-                        className="generate-chart-btn">
-                        Generate Chart
-                    </button>
+                    <CustomButton
+                        isButtonEnabled={isButtonEnabled}
+                        chartType={chartType}
+                        buttonText={"Generate Series Chart"}
+                        handleButtonClick={handleButtonClick}/>
                 </div>
                 }
 
@@ -111,15 +147,28 @@ export default function SelectionMenu(){
                             setMinDate={setMinDate}
                             maxDate={maxDate} 
                             placeholderText={"Select a series end date"}/>
-                            <button
-                                disabled={isButtonEnabled()}
-                                style={{ cursor: !isButtonEnabled() ? 'not-allowed' : 'pointer' }}
-                                className="generate-chart-btn">
-                                Generate Chart
-                            </button>
+                        <CustomButton
+                            isButtonEnabled={isButtonEnabled}
+                            chartType={chartType}
+                            buttonText={"Generate Waterfall Chart"}
+                            handleButtonClick={handleButtonClick}/>
                     </div>
                 }
             </div>
         )
+    }
 
-}
+
+function CustomButton({ isButtonEnabled, chartType, buttonText, handleButtonClick }) {
+
+    const isEnabled = isButtonEnabled(chartType.value);
+    return (
+        <button
+            disabled={!isEnabled}
+            style={{ cursor: isEnabled ? 'pointer' : 'not-allowed' }}
+            className="generate-chart-btn"
+            onClick={handleButtonClick}>
+            {buttonText}
+        </button>
+    );
+};

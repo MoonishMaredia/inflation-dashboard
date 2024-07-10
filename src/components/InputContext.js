@@ -7,10 +7,10 @@ export function useInput() {
 }
 
 export const InputProvider = ({ children }) => {
-  const [inputFields, setInputFields] = useState({});
+  const [chartInputs, setChartInputs] = useState({});
 
   return (
-    <InputContext.Provider value={{ inputFields, setInputFields }}>
+    <InputContext.Provider value={{ chartInputs, setChartInputs }}>
       {children}
     </InputContext.Provider>
   );

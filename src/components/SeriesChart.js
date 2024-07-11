@@ -2,7 +2,6 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 import { useResults } from "./ResultsContext"
 import { useInput } from './InputContext';
-import { seriesData } from '../optionsData';
 import {useState, useEffect} from 'react'
 
 const YtitleMapping = {

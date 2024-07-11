@@ -10,6 +10,7 @@ import SelectionMenu from './SelectionMenu'
 import MyPlotlyChart from './TimeSeriesChart'
 import BlankChart from './BlankChart'
 import SeriesChart from './SeriesChart'
+import WaterfallComponent from './WaterfallComponent'
 
 import {
     chartTypeOptions,
@@ -19,8 +20,10 @@ import {
 export default function FinalLayout() { 
 
     const [showOptions, setShowOptions] = useState(true)
-    const [fromDate, setFromDate] = useState(null);
-    const [toDate, setToDate] = useState(null);
+    const [fromDateSeries, setFromDateSeries] = useState(null);
+    const [toDateSeries, setToDateSeries] = useState(null);
+    const [fromDateCompare, setFromDateCompare] = useState(null);
+    const [toDateCompare, setToDateCompare] = useState(null);
     const [selectedSeries, setSelectedSeries] = useState([]);
     const [metric, setMetric] = useState(null)  
     const [chartType, setChartType] = useState(null)
@@ -35,10 +38,17 @@ return (
         {showOptions && 
             <div className="selection-view">
                 <SelectionMenu
-                    fromDate={fromDate}
-                    setFromDate={setFromDate}
-                    toDate={toDate}
-                    setToDate={setToDate}
+
+                    fromDateSeries={fromDateSeries}
+                    setFromDateSeries={setFromDateSeries}
+                    toDateSeries={toDateSeries}
+                    setToDateSeries={setToDateSeries}
+
+                    fromDateCompare={fromDateCompare}
+                    setFromDateCompare={setFromDateCompare}
+                    toDateCompare={toDateCompare}
+                    setToDateCompare={setToDateCompare}
+
                     selectedSeries={selectedSeries}
                     setSelectedSeries={setSelectedSeries}
                     metric={metric}
@@ -46,14 +56,24 @@ return (
                     chartType={chartType}
                     setChartType={setChartType}/>
 
-                {!results['time-series'] &&
+                {(!chartType || (chartType && chartType.value==='time-series' && !results['time-series'])) &&
                     <div className="item1">
                         <BlankChart />
                     </div>}
 
-                {results['time-series'] &&
+                {(!chartType || (chartType && chartType.value==='compare' && !results['compare'])) &&
                 <div className="item1">
-                    <SeriesChart />
+                    <BlankChart />
+                </div>}
+
+                {((chartType && chartType.value==='time-series' && results['time-series'])) &&
+                    <div className="item1">
+                        <SeriesChart />
+                    </div>}
+
+                {((chartType && chartType.value==='compare' && results['compare'])) &&
+                <div className="item1">
+                    <WaterfallComponent />
                 </div>}
             </div>
         }

@@ -8,8 +8,10 @@ import {getSeriesData, getCompareData} from '../utils/api.js';
 import { useInput } from './InputContext'
 import { useResults } from './ResultsContext'
 
-export default function SelectionMenu({fromDate, setFromDate, toDate, setToDate,
-    selectedSeries, setSelectedSeries, metric, setMetric, chartType, setChartType}){
+export default function SelectionMenu({fromDateSeries, setFromDateSeries,
+    toDateSeries, setToDateSeries, fromDateCompare, setFromDateCompare,
+    toDateCompare, setToDateCompare, selectedSeries, setSelectedSeries, 
+    metric, setMetric, chartType, setChartType}){
 
     const [errors, setErrors] = useState({});
     const [minDate, setMinDate] = useState(new Date(1999, 1, 1));
@@ -29,9 +31,9 @@ export default function SelectionMenu({fromDate, setFromDate, toDate, setToDate,
 
     const isButtonEnabled = (type) => {
         if (type === 'time-series') {
-            return (chartType && metric && fromDate && toDate && selectedSeries.length > 0);
+            return (chartType && metric && fromDateSeries && toDateSeries && selectedSeries.length > 0);
         } else if (type === 'compare') {
-            return chartType && fromDate && toDate;
+            return chartType && fromDateCompare && toDateCompare;
         } return false;
       };
 
@@ -40,10 +42,10 @@ export default function SelectionMenu({fromDate, setFromDate, toDate, setToDate,
             const inputObject = {
                 chartType: "time-series",
                 seriesType: metric.value,
-                yearStart: fromDate.getFullYear(),
-                yearEnd: toDate.getFullYear(),
-                monthStart: monthToString[monthNames[fromDate.getMonth()]],
-                monthEnd: monthToString[monthNames[toDate.getMonth()]],
+                yearStart: fromDateSeries.getFullYear(),
+                yearEnd: toDateSeries.getFullYear(),
+                monthStart: monthToString[monthNames[fromDateSeries.getMonth()]],
+                monthEnd: monthToString[monthNames[toDateSeries.getMonth()]],
                 seriesIds: selectedSeries
             }
             setChartInputs(prev=>({
@@ -58,11 +60,11 @@ export default function SelectionMenu({fromDate, setFromDate, toDate, setToDate,
 
         } else if(chartType.value==="compare") {
             const inputObject = {
-                chartType: "time-series",
-                yearStart: fromDate.getFullYear(),
-                yearEnd: toDate.getFullYear(),
-                monthStart: monthNames[fromDate.getMonth()],
-                monthEnd: monthNames[toDate.getMonth()]
+                chartType: "compare",
+                yearStart: fromDateCompare.getFullYear(),
+                yearEnd: toDateCompare.getFullYear(),
+                monthStart: monthToString[monthNames[fromDateCompare.getMonth()]],
+                monthEnd: monthToString[monthNames[toDateCompare.getMonth()]]
             }
             setChartInputs(prev=>({
                 ...prev,
@@ -99,8 +101,8 @@ export default function SelectionMenu({fromDate, setFromDate, toDate, setToDate,
                         setStateVar={setMetric}
                     />
                         <MonthYearPicker
-                            existingDate={fromDate}
-                            onDateChange={setFromDate}
+                            existingDate={fromDateSeries}
+                            onDateChange={setFromDateSeries}
                             defaultDate={minDate} 
                             minDate={minDate} 
                             setMinDate={setMinDate}
@@ -109,8 +111,8 @@ export default function SelectionMenu({fromDate, setFromDate, toDate, setToDate,
                             placeholderText={"Select a series start date"}
                         />
                         <MonthYearPicker 
-                            existingDate={toDate}
-                            onDateChange={setToDate}
+                            existingDate={toDateSeries}
+                            onDateChange={setToDateSeries}
                             defaultDate={maxDate} 
                             setMinDate={setMinDate}
                             minDate={minDate} 
@@ -131,8 +133,9 @@ export default function SelectionMenu({fromDate, setFromDate, toDate, setToDate,
 
                 {chartType && chartType.value==="compare" && 
                     <div className="menu-options">
-                       <MonthYearPicker 
-                            onDateChange={setFromDate}
+                        <MonthYearPicker
+                            existingDate={fromDateCompare}
+                            onDateChange={setFromDateCompare}
                             defaultDate={minDate} 
                             minDate={minDate} 
                             setMinDate={setMinDate}
@@ -141,12 +144,14 @@ export default function SelectionMenu({fromDate, setFromDate, toDate, setToDate,
                             placeholderText={"Select a series start date"}
                         />
                         <MonthYearPicker 
-                            onDateChange={setToDate}
+                            existingDate={toDateCompare}
+                            onDateChange={setToDateCompare}
                             defaultDate={maxDate} 
-                            minDate={minDate}
                             setMinDate={setMinDate}
+                            minDate={minDate} 
                             maxDate={maxDate} 
-                            placeholderText={"Select a series end date"}/>
+                            placeholderText={"Select a series end date"}
+                            />
                         <CustomButton
                             isButtonEnabled={isButtonEnabled}
                             chartType={chartType}

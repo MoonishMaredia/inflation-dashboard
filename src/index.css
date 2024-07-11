@@ -696,5 +696,19 @@ label {
   font-style: italic;
   margin-top: auto;
   margin-bottom: auto;
+}
 
+.wfall-detail-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.category-contain {
+  /* border-bottom: 2px solid black; */
+}
+
+.wfall-detail-subtitle {
+  font-size: 1.15rem;
+  font-style: italic;
+  margin-top: 1rem;
 }

@@ -17,7 +17,7 @@ const WaterfallChart = ({ setHoveredCategory }) => {
   const y = [...results['compare']['y-axis']];
 
   const types = y.map((_, index) => {
-    if (index === 9) return 'total';
+    if (index === 0 || index === y.length - 1) return 'total';
     return 'relative';
   });
 
@@ -25,7 +25,7 @@ const WaterfallChart = ({ setHoveredCategory }) => {
     type: 'waterfall',
     x: x,
     y: y,
-    text: y.map(value => `${Math.abs(value)}`),
+    text: y.map(value => `${value}`),
     textposition: 'outside',
     connector: {
       line: {
@@ -33,6 +33,28 @@ const WaterfallChart = ({ setHoveredCategory }) => {
       }
     },
     measure: types,
+    increasing: {
+      marker: {
+        color: 'green'
+      }
+    },
+    decreasing: {
+      marker: {
+        color: 'red'
+      }
+    },
+    totals: {
+      marker: {
+        color: 'blue'
+      }
+    },
+    marker: {
+      color: y.map((value, index) => {
+        if (index === 0 || index === y.length - 1) return 'blue';
+        return value > 0 ? 'green' : 'red';
+      })
+    },
+    base: 100
   }];
 
   const layout = {
@@ -82,7 +104,7 @@ const WaterfallChart = ({ setHoveredCategory }) => {
   );
 };
 
-function InfoDisplay({ category, categoryIndex, results }) {
+function InfoDisplay({ category, categoryIndex, chartInputs, results }) {
 
   const categoryKeys = (category && categoryIndex !== 0 && categoryIndex !== 9) ? Object.keys(results['compare']['details'][category]) : null;
   const subResults = (category && categoryIndex !== 0 && categoryIndex !== 9) ? results['compare']['details'][category] : null;
@@ -90,12 +112,17 @@ function InfoDisplay({ category, categoryIndex, results }) {
 
   return (
     <div>
-      <div className="modal-content">
+      <div className="">
         <p className="wfall-detail-title">
           {categoryString}
         </p>
         {categoryKeys && categoryIndex !== 0 && categoryIndex !== 9 && 
-          categoryKeys.map((key, index) => {
+        <>
+          <div className='category-display-header'>
+            <p>Total Contributing Change</p>
+            <p>{results['compare']['y-axis'][categoryIndex].toFixed(3)}</p>
+          </div>
+          {categoryKeys.map((key, index) => {
             return (
               <CategoryCard
                 level={subResults[key]['level']}
@@ -104,13 +131,15 @@ function InfoDisplay({ category, categoryIndex, results }) {
               />
             );
           })}
+          </>
+          }
         {categoryIndex === 0 && 
           <div>
-
+            <p className="display-explain">Price level indexed to 100 for your series start date</p>
           </div>
         }
         {categoryIndex === 9 && 
-          <p>Something about end index here!</p>
+            <p className="display-explain">CPI index {results['compare']['y-axis'][9] - 100 > 0 ? "increased" : "decreased"} by ~{Math.abs((results['compare']['y-axis'][9] - 100).toFixed(0))}% between {stringToMonth[chartInputs['compare'].monthStart]}, {chartInputs['compare'].yearStart} and {stringToMonth[chartInputs['compare'].monthEnd]}, {chartInputs['compare'].yearEnd}</p>
         }
       </div>
     </div>
@@ -120,6 +149,7 @@ function InfoDisplay({ category, categoryIndex, results }) {
 const WaterfallComponent = () => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const { results } = useResults({});
+  const {chartInputs} = useInput({})
 
   return (
     <div style={{ 
@@ -127,7 +157,7 @@ const WaterfallComponent = () => {
       height: '100%', 
       width: '100%' 
     }}>
-      <div style={{ flex: '3', minWidth: 0 }}>
+      <div style={{ flex: '3.25', minWidth: 0 }}>
         <WaterfallChart setHoveredCategory={setHoveredCategory} />
       </div>
       <div style={{ flex: '1', 
@@ -144,13 +174,14 @@ const WaterfallComponent = () => {
           <InfoDisplay
             category={hoveredCategory.xValue}
             categoryIndex={hoveredCategory.index}
+            chartInputs={chartInputs}
             results={results}
           />
         }
         {!hoveredCategory &&
           <div className="category-contain">
             <p className="wfall-detail-title">Category Information</p>
-            <p className="wfall-detail-subtitle">Hover over the chart for additional detail </p>
+            <p className="wfall-detail-subtitle">Hover over the chart for more detail</p>
           </div>
         }
         </>
@@ -175,11 +206,9 @@ function CategoryCard({ level, title, weight }) {
   }
 
   return (
-    <div className="modal-card">
-      <div className="modal-card-checkbox">
-        <p className={getClassName(level, "title")}>{title}</p>
-      </div>
-      <p className={getClassName(level, "weight")}>{weight}</p>
+    <div className="category-display-row">
+      <p className={getClassName(level, "title")}>{title}</p>
+      <p className={getClassName(level, "weight")}>{weight.toFixed(3)}</p>
     </div>
   );
 }

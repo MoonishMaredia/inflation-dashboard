@@ -9,7 +9,6 @@ export default function Header({showOptions, setShowOptions}) {
                 <img className="header-logo" src={flagLogo}></img>
                 <p>US CPI Inflation Dashboard</p>
             </div>
-            <button onClick={()=>setShowOptions(prev=>!prev)}>{showOptions ? "Hide Options" : "Show Options"}</button>
         </div>
     )
 }

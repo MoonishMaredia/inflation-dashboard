@@ -437,6 +437,29 @@ label {
   margin-right: 0.5rem;
 }
 
+.top-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.option-btn {
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  margin-right: 0.25rem;
+  font-size: 12px;
+  border-radius: 5px;
+  background: rgb(226 232 240);
+  color: black;
+  cursor: pointer;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.option-btn:hover {
+  background: black;
+  color: white;
+}
+
 .menu-options {
   display: flex;
   flex-direction: column;
@@ -559,6 +582,18 @@ label {
   padding: 10px; /* Optional: Adjust the padding */
   box-sizing: border-box;
   align-self: center;
+}
+
+.no-options-view > .item1 {
+    position: relative;
+    grid-area: chart;
+}
+
+.item1 > button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
 }
 
 .landing-view-grid {
@@ -711,4 +746,36 @@ label {
   font-size: 1.15rem;
   font-style: italic;
   margin-top: 1rem;
+}
+
+.category-display-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.category-display-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.category-display-row > .level1-title {
+  margin-left: 0px;
+}
+
+.category-display-row > .level2-title {
+  margin-left: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.category-display-row > .level3-title {
+  margin-left: 25px;
+}
+
+.display-explain {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  font-style: italic;
 }

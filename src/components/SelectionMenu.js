@@ -10,12 +10,12 @@ import { useResults } from './ResultsContext'
 
 export default function SelectionMenu({fromDateSeries, setFromDateSeries,
     toDateSeries, setToDateSeries, fromDateCompare, setFromDateCompare,
-    toDateCompare, setToDateCompare, selectedSeries, setSelectedSeries, 
-    metric, setMetric, chartType, setChartType}){
+    toDateCompare, setToDateCompare, dataMaxDate, selectedSeries, setSelectedSeries, 
+    metric, setMetric, chartType, setChartType, showOptions, setShowOptions}){
 
     const [errors, setErrors] = useState({});
-    const [minDate, setMinDate] = useState(new Date(1999, 1, 1));
-    const maxDate = new Date(2024, 5, 1);
+    const [minDateSeries, setMinDateSeries] = useState(new Date(1999, 1, 1));
+    const [minDateCompare, setMinDateCompare] = useState(new Date(1999, 1, 1));
     const {results, setResults} = useResults({});
     const {chartInputs, setChartInputs} = useInput({});
 
@@ -85,7 +85,10 @@ export default function SelectionMenu({fromDateSeries, setFromDateSeries,
         return (
             <div className="selection-menu">
                 <div className="chart-type-selection">
-                    <h3>Chart Options</h3>
+                    <div className="top-row">
+                        <h3>Chart Options</h3>
+                        <button className="option-btn" onClick={()=>setShowOptions(prev=>!prev)}>{showOptions ? "Hide Options" : "Show Options"}</button>
+                    </div>
                     <Dropdown
                             placeholderText="Select chart type"
                             stateVar={chartType}
@@ -103,20 +106,20 @@ export default function SelectionMenu({fromDateSeries, setFromDateSeries,
                         <MonthYearPicker
                             existingDate={fromDateSeries}
                             onDateChange={setFromDateSeries}
-                            defaultDate={minDate} 
-                            minDate={minDate} 
-                            setMinDate={setMinDate}
-                            maxDate={maxDate} 
+                            defaultDate={minDateSeries} 
+                            minDate={minDateSeries} 
+                            setMinDate={setMinDateSeries}
+                            maxDate={dataMaxDate} 
                             dateType={"from"}
                             placeholderText={"Select a series start date"}
                         />
                         <MonthYearPicker 
                             existingDate={toDateSeries}
                             onDateChange={setToDateSeries}
-                            defaultDate={maxDate} 
-                            setMinDate={setMinDate}
-                            minDate={minDate} 
-                            maxDate={maxDate} 
+                            defaultDate={dataMaxDate} 
+                            minDate={minDateSeries} 
+                            setMinDate={setMinDateSeries}
+                            maxDate={dataMaxDate} 
                             placeholderText={"Select a series end date"}
                             />
                     <SelectSeries 
@@ -136,20 +139,20 @@ export default function SelectionMenu({fromDateSeries, setFromDateSeries,
                         <MonthYearPicker
                             existingDate={fromDateCompare}
                             onDateChange={setFromDateCompare}
-                            defaultDate={minDate} 
-                            minDate={minDate} 
-                            setMinDate={setMinDate}
-                            maxDate={maxDate} 
+                            defaultDate={minDateCompare} 
+                            minDate={minDateCompare} 
+                            setMinDate={setMinDateCompare}
+                            maxDate={dataMaxDate} 
                             dateType={"from"}
                             placeholderText={"Select a series start date"}
                         />
                         <MonthYearPicker 
                             existingDate={toDateCompare}
                             onDateChange={setToDateCompare}
-                            defaultDate={maxDate} 
-                            setMinDate={setMinDate}
-                            minDate={minDate} 
-                            maxDate={maxDate} 
+                            defaultDate={dataMaxDate} 
+                            minDate={minDateCompare} 
+                            setMinDate={setMinDateCompare}
+                            maxDate={dataMaxDate} 
                             placeholderText={"Select a series end date"}
                             />
                         <CustomButton

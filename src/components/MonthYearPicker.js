@@ -50,7 +50,11 @@ const MonthYearPicker = ({existingDate, onDateChange, defaultDate, minDate, setM
   const incrementYearByFive = () => handleYearChange(selectedDate.getFullYear() + 5);
   const decrementYearByFive = () => handleYearChange(selectedDate.getFullYear() - 5);
 
-  const toggleOpen = () => setIsOpen(!isOpen);
+  const toggleOpen = () => {
+    if(dateType === "from") {
+      setMinDate(new Date(1999, 0, 1))
+    }
+    setIsOpen(!isOpen)};
 
   return (
     <div className="month-year-picker">

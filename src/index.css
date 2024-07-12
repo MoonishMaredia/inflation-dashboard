@@ -14,12 +14,6 @@ label {
   font-size: 1rem;
 }
 
-.main-options {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .header {
   display: flex;
   color: black;
@@ -64,99 +58,6 @@ label {
   max-width: 50px;
 }
 
-.inputs-menu {
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-}
-
-.options-menu {
-  display: grid;
-  grid-template-columns: 1.5fr 1.5fr 1.5fr 1.5fr 1fr;
-  gap: 10px;
-  background-color: white;
-  border: 1px solid rgb(203, 213, 225);
-  border-radius: 6px;
-  justify-content: center;
-  margin-top: 1%;
-  padding: 1.75rem 2.5rem;
-  padding-bottom: 2rem;
-}
-
-.options-menu-compare {
-  display: grid;
-  align-self: center;
-  width: 60%;
-  grid-template-columns: 1.5fr 1.5fr 1fr;
-  gap: 10px;
-  background-color: white;
-  border: 1px solid rgb(203, 213, 225);
-  border-radius: 6px;
-  justify-content: center;
-  margin-top: 1%;
-  padding: 1.75rem 2.5rem;
-  padding-bottom: 2rem;
-}
-
-.menu-selector {
-  display: flex;
-  text-align: center;
-  margin-top: 1%;
-  width: 35%;
-}
-
-.menu-selector > h3 {
-  font-size: 1.15rem;
-}
-
-.unselected-menu-item, .selected-menu-item {
-  border: 1px solid rgb(203 213 225);
-  padding: 1.15rem 0px;
-  cursor: pointer;
-  font-size: 1rem;
-  width: 40%;
-  font-weight: 400;
-}
-
-.selected-menu-item {
-  background-color: rgb(71 85 105);
-  color: white;
-  font-weight: 600;
-}
-
-.selector-item {
-  width: 80%;
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px; 
-}
-
-.selector-item > label {
-  margin-bottom: 2.5%;
-  color: gray;
-  font-size: 0.85rem;
-}
-
-.selector-item > select {
-  font-size: 1rem;
-  border: none;
-  margin-top: 0.5rem;
-}
-
-.month-year-input {
-  display: flex;
-  justify-content: space-between; 
-}
-
-.month-year-input > .month-input {
-  width: 60%;
-}
-
-.month-year-input > .year-input {
-  width: 30%;
-}
-
 .add-series-btn {
   display: flex;
   width: 100%;
@@ -182,11 +83,6 @@ label {
 
 .add-series-btn > span {
   margin-left: 10px;
-}
-
-.selector-item > button {
-  display: flex;
-  align-items: center;
 }
 
 .selected-pill {
@@ -269,7 +165,6 @@ label {
 
 .modal-category-table {
   display: flex;
-  /* margin-top: 0%; */
   margin-left: 5%;
   margin-right: 5%;
   justify-content: space-between;
@@ -350,80 +245,6 @@ label {
   font-weight: 300;
 }
 
-.add-series-modal-btn {
-  background-color: rgb(203 213 225);
-  color: rgb(71 85 105);;
-  border: none;
-  padding: 0.5rem 0.75rem;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
-.add-series-modal-btn:hover{
-  background-color: rgb(71 85 105);
-  color: white;
-}
-
-.selected-series-pill {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 60px;
-    background-color: rgb(203 213 225);
-    font-size: 12px;
-    text-align: center;
-    align-self: center;
-    border-radius: 0.25rem;
-    padding: 0.25rem;
-    margin-right: 0.25rem;
-    margin-top: 0.25rem;
-}
-
-
-.generate-btn {
-  background-color: rgb(71, 85, 105);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-top: auto; /* Vertically center the button */
-  margin-bottom: auto; /* Vertically center the button */
-  padding: 1.25rem 0rem;
-}
-
-.generate-btn:hover {
-  background-color: rgb(30 41 59);
-}
-
-.error-message {
-  color: red;
-  font-size: 0.75rem;
-  margin: 0;
-  margin-top: 0.5rem;
-}
-
-.chart-container {
-  /* width: 90%; */
-  height: 800px; /* Or whatever height you want */
-  border: 1px solid black;
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.my-multi-series-line-chart {
-  /* border: 1px solid red; */
-}
-
-/* .chart-component {
-  width: 100%;
-} */
-
 .item1 { grid-area: chart; }
 .item2 { grid-area: y-axis; }
 .item3 { grid-area: x-start; }
@@ -473,7 +294,6 @@ label {
 .generate-chart-btn {
   font-size: 1rem;
   padding: 1rem 2rem;
-  /* margin-right: 1rem; */
   font-size: 16px;
   border-radius: 5px;
   background: rgb(226 232 240);
@@ -515,60 +335,6 @@ label {
   align-self: center;
 }
 
-.series-view {
-  display: grid;
-  height: 92vh;
-  width: 100%;
-  grid-template-areas:
-    'y-axis type type type type type type legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis x-start x-start x-start x-end x-end x-end legend legend legend'
-    'y-axis x-start x-start x-start x-end x-end x-end legend legend legend';
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  gap: 10px; /* Optional: Adjust the gap between grid items */
-  /* background-color: #2196F3; */
-  padding: 10px; /* Optional: Adjust the padding */
-  box-sizing: border-box;
-  align-self: center;
-}
-
-.compare-view {
-  display: grid;
-  height: 92vh;
-  width: 100%;
-  grid-template-areas:
-    'type type type type type type type type type type'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'x-start x-start x-start x-start x-end x-end x-end x-end x-end x-end'
-    'x-start x-start x-start x-start x-end x-end x-end x-end x-end x-end';
-  grid-template-rows: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
-  grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
-  gap: 10px; /* Optional: Adjust the gap between grid items */
-  /* background-color: #2196F3; */
-  padding: 10px; /* Optional: Adjust the padding */
-  box-sizing: border-box;
-  align-self: center;
-}
-
 .no-options-view {
   display: grid;
   height: 92vh;
@@ -595,61 +361,6 @@ label {
   left: 10px;
   z-index: 1;
 }
-
-.landing-view-grid {
-  display: grid;
-  height: 92vh;
-  width: 100%;
-  grid-template-areas:
-    'type type type type type type type type type type'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart'
-    'chart chart chart chart chart chart chart chart chart chart';
-  grid-template-rows: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
-  grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
-  gap: 10px; /* Optional: Adjust the gap between grid items */
-  /* background-color: #2196F3; */
-  padding: 10px; /* Optional: Adjust the padding */
-  box-sizing: border-box;
-  align-self: center;
-}
-
-
-/* .grid-container3 {
-  display: grid;
-  height: 92vh;
-  width: 100%;
-  grid-template-areas:
-    'y-axis type type type type type type legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis chart chart chart chart chart chart legend legend legend'
-    'y-axis x-start x-start x-start x-end x-end x-end legend legend legend'
-    'y-axis x-start x-start x-start x-end x-end x-end legend legend legend';
-  grid-template-rows: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
-  grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr auto;
-  gap: 10px; 
-  background-color: #2196F3;
-  padding: 10px; 
-  box-sizing: border-box;
-  align-self: center;
-} */
 
 .series-view > div {
   background-color: rgba(255, 255, 255, 0.8);
@@ -736,10 +447,6 @@ label {
 .wfall-detail-title {
   font-weight: bold;
   font-size: 1.5rem;
-}
-
-.category-contain {
-  /* border-bottom: 2px solid black; */
 }
 
 .wfall-detail-subtitle {

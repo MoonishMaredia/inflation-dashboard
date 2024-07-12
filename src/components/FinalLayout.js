@@ -30,7 +30,7 @@ export default function FinalLayout() {
                 const utcDate = new Date(Date.UTC(year, month - 1, day+1));
                 setDataMaxDate(new Date(utcDate.toISOString()));
             } else {
-                setDataMaxDate(new Date(2024, 5,1 ))
+                setDataMaxDate(new Date(2024, 4, 1))
             }
         };
         fetchData()

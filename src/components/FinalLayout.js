@@ -25,93 +25,72 @@ export default function FinalLayout() {
     useEffect(() => {
         const fetchData = async () => {
             const dateString = await getMaxDate()
-            const [year, month, day] = dateString.split('-').map(Number);
-            const utcDate = new Date(Date.UTC(year, month - 1, day+1));
-            setDataMaxDate(new Date(utcDate.toISOString()));
+            if(dateString) {
+                const [year, month, day] = dateString.split('-').map(Number);
+                const utcDate = new Date(Date.UTC(year, month - 1, day+1));
+                setDataMaxDate(new Date(utcDate.toISOString()));
+            } else {
+                setDataMaxDate(new Date(2024, 5,1 ))
+            }
         };
         fetchData()
     }, [])
 
-return (
-    <div className="main">
-        <Header/>
+    const renderChart = () => {
+        if (!chartType) {
+            return <BlankChart />;
+        }
+        switch (chartType.value) {
+            case 'time-series':
+                return results['time-series'] ? <SeriesChart /> : <BlankChart />;
+            case 'compare':
+                return results['compare'] ? <WaterfallComponent /> : <BlankChart />;
+            default:
+                return <BlankChart />;
+        }
+    };
 
-        {showOptions && 
-            <div className="selection-view">
-                <SelectionMenu
+    const renderOptionsButton = () => (
+        <button className="option-btn" onClick={() => setShowOptions((prev) => !prev)}>
+            {showOptions ? 'Hide Options' : 'Show Options'}
+        </button>
+    );
 
-                    fromDateSeries={fromDateSeries}
-                    setFromDateSeries={setFromDateSeries}
-                    toDateSeries={toDateSeries}
-                    setToDateSeries={setToDateSeries}
-
-                    fromDateCompare={fromDateCompare}
-                    setFromDateCompare={setFromDateCompare}
-                    toDateCompare={toDateCompare}
-                    setToDateCompare={setToDateCompare}
-
-                    dataMaxDate={dataMaxDate}
-
-                    selectedSeries={selectedSeries}
-                    setSelectedSeries={setSelectedSeries}
-                    metric={metric}
-                    setMetric={setMetric}
-                    chartType={chartType}
-                    setChartType={setChartType}
-
-                    showOptions={showOptions}
-                    setShowOptions={setShowOptions}
+    return (
+        <div className="main">
+            <Header />
+            {showOptions ? (
+                <div className="selection-view">
+                    <SelectionMenu
+                        fromDateSeries={fromDateSeries}
+                        setFromDateSeries={setFromDateSeries}
+                        toDateSeries={toDateSeries}
+                        setToDateSeries={setToDateSeries}
+                        fromDateCompare={fromDateCompare}
+                        setFromDateCompare={setFromDateCompare}
+                        toDateCompare={toDateCompare}
+                        setToDateCompare={setToDateCompare}
+                        dataMaxDate={dataMaxDate}
+                        selectedSeries={selectedSeries}
+                        setSelectedSeries={setSelectedSeries}
+                        metric={metric}
+                        setMetric={setMetric}
+                        chartType={chartType}
+                        setChartType={setChartType}
+                        showOptions={showOptions}
+                        setShowOptions={setShowOptions}
                     />
-
-                {(!chartType || (chartType && chartType.value==='time-series' && !results['time-series'])) &&
+                    <div className="item1">{renderChart()}</div>
+                </div>
+            ) : (
+                <div className="no-options-view">
                     <div className="item1">
-                        <BlankChart />
-                    </div>}
-
-                {(!chartType || (chartType && chartType.value==='compare' && !results['compare'])) &&
-                <div className="item1">
-                    <BlankChart />
-                </div>}
-
-                {((chartType && chartType.value==='time-series' && results['time-series'])) &&
-                    <div className="item1">
-                        <SeriesChart />
-                    </div>}
-
-                {((chartType && chartType.value==='compare' && results['compare'])) &&
-                <div className="item1">
-                    <WaterfallComponent />
-                </div>}
-            </div>
-        }
-        {!showOptions && 
-            <div className="no-options-view">
-                
-                {(!chartType || (chartType && chartType.value==='time-series' && !results['time-series'])) &&
-                    <div className="item1">
-                        <button className="option-btn" onClick={()=>setShowOptions(prev=>!prev)}>{showOptions ? "Hide Options" : "Show Options"}</button>
-                        <BlankChart />
-                    </div>}
-
-                {(!chartType || (chartType && chartType.value==='compare' && !results['compare'])) &&
-                <div className="item1">
-                    <button className="option-btn" onClick={()=>setShowOptions(prev=>!prev)}>{showOptions ? "Hide Options" : "Show Options"}</button>
-                    <BlankChart />
-                </div>}
-
-                {((chartType && chartType.value==='time-series' && results['time-series'])) &&
-                    <div className="item1">
-                        <button className="option-btn" onClick={()=>setShowOptions(prev=>!prev)}>{showOptions ? "Hide Options" : "Show Options"}</button>
-                        <SeriesChart />
-                    </div>}
-
-                {((chartType && chartType.value==='compare' && results['compare'])) &&
-                <div className="item1">
-                    <button className="option-btn" onClick={()=>setShowOptions(prev=>!prev)}>{showOptions ? "Hide Options" : "Show Options"}</button>
-                    <WaterfallComponent />
-                </div>}
-            </div>
-        }
-    </div>
-    )}
+                        {renderOptionsButton()}
+                        {renderChart()}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
 

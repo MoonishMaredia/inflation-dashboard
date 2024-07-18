@@ -5,6 +5,8 @@ import { useResults } from './ResultsContext'
 import SelectionMenu from './SelectionMenu'
 import BlankChart from './BlankChart'
 import SeriesChart from './SeriesChart'
+import SeriesChartMobile from './SeriesChartMobile'
+
 import WaterfallComponent from './WaterfallComponent'
 import {getMaxDate} from '../utils/api'
 
@@ -42,7 +44,7 @@ export default function FinalLayout() {
         }
         switch (chartType.value) {
             case 'time-series':
-                return results['time-series'] ? <SeriesChart /> : <BlankChart />;
+                return results['time-series'] ? <SeriesChartMobile /> : <BlankChart />;
             case 'compare':
                 return results['compare'] ? <WaterfallComponent /> : <BlankChart />;
             default:
@@ -50,8 +52,8 @@ export default function FinalLayout() {
         }
     };
 
-    const renderOptionsButton = () => (
-        <button className="option-btn" onClick={() => setShowOptions((prev) => !prev)}>
+    const renderOptionsButton = (mobile) => (
+        <button className={mobile ? "option-btn-mobile" : 'option-btn'} onClick={() => setShowOptions((prev) => !prev)}>
             {showOptions ? 'Hide Options' : 'Show Options'}
         </button>
     );
@@ -61,6 +63,7 @@ export default function FinalLayout() {
             <Header />
             {showOptions ? (
                 <div className="selection-view">
+                    <div className="selection-menu">
                     <SelectionMenu
                         fromDateSeries={fromDateSeries}
                         setFromDateSeries={setFromDateSeries}
@@ -80,7 +83,11 @@ export default function FinalLayout() {
                         showOptions={showOptions}
                         setShowOptions={setShowOptions}
                     />
-                    <div className="item1">{renderChart()}</div>
+                    </div>
+                    <div className="item1">
+                        {renderOptionsButton(true)}
+                        {renderChart()}
+                    </div>
                 </div>
             ) : (
                 <div className="no-options-view">

@@ -135,7 +135,7 @@ label {
 
 .modal-content {
   flex: 1;
-  max-height: 40vh;
+  max-height: 30vh;
   overflow-y: auto;
   padding: 1% 2%;
   border-bottom: 2px solid gray;
@@ -263,7 +263,7 @@ label {
   justify-content: space-between;
 }
 
-.option-btn {
+.option-btn, .option-btn-menu {
   font-size: 0.75rem;
   padding: 0.5rem 1rem;
   margin-right: 0.25rem;
@@ -301,6 +301,7 @@ label {
   cursor: pointer;
   margin-top: 10px;
   border: 2px solid black;
+  width: 100%;
 }
 
 .generate-chart-btn:hover {
@@ -440,6 +441,7 @@ label {
   color: gray;
   font-size: 4rem;
   font-style: italic;
+  text-align: center;
   margin-top: auto;
   margin-bottom: auto;
 }
@@ -485,4 +487,113 @@ label {
   font-size: 1.2rem;
   line-height: 1.5rem;
   font-style: italic;
+}
+
+.option-btn-mobile {
+  display: none;
+}
+
+
+@media (max-width: 600px) {
+  .selection-view {
+    display: grid;
+    height: 95vh;
+    width: 100%;
+    grid-template-areas:
+      'chart chart chart chart chart chart chart chart chart chart'
+      'chart chart chart chart chart chart chart chart chart chart'
+      'chart chart chart chart chart chart chart chart chart chart'
+      'chart chart chart chart chart chart chart chart chart chart'
+      'chart chart chart chart chart chart chart chart chart chart'
+      'chart chart chart chart chart chart chart chart chart chart'
+      'menu menu menu menu menu menu menu menu menu menu'
+      'menu menu menu menu menu menu menu menu menu menu';
+    grid-template-rows: repeat(1fr, 8);
+    grid-template-columns: repeat(1fr, 10);
+    gap: 5px;
+    /* background-color: #2196F3; */
+    padding: 10px;
+    box-sizing: border-box;
+    align-self: center;
+}
+
+.option-btn-menu {
+  display: none;
+}
+
+.option-btn, .option-btn-mobile {
+  display: inline;
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  margin-right: 0.25rem;
+  font-size: 12px;
+  border-radius: 5px;
+  background: rgb(226 232 240);
+  color: black;
+  cursor: pointer;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.generateBtn {
+  width: 100%;
+  display: block;
+  margin-bottom: 40px;
+}
+
+.selection-menu-mobile {
+  /* height: 40vh; */
+  width: 100%;
+}
+
+.blank-chart > h2 {
+  color: gray;
+  font-size: 1.5rem;
+  font-style: italic;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.header {
+  display: flex;
+  color: black;
+  font-weight: 600;
+  text-align: left;
+  font-size: 1.15rem;
+  margin-left: 1rem;
+}
+
+.header-logo {
+  max-width: 40px;
+}
+
+.menu-options {
+  gap: 20px;
+}
+
+.chart-type-selection {
+  margin-bottom: 20px;
+}
+
+.generate-chart-btn {
+  width: 100%;
+}
+
+.item1 {
+  position: relative;
+  grid-area: chart;
+}
+
+.item1 > button {
+position: absolute;
+top: 10px;
+left: 10px;
+z-index: 1;
+}
+
+.top-row > h3 {
+  font-size: 1rem;
+}
+
 }

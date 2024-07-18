@@ -80,16 +80,19 @@ export default function SelectionMenu({fromDateSeries, setFromDateSeries,
             console.log("Error!")
             return
         }
+
+        setShowOptions(false)
+
         }
 
         return (
-            <div className="selection-menu">
+            <div className="">
                 <div className="chart-type-selection">
                     <div className="top-row">
                         <h3>Chart Options</h3>
-                        <button className="option-btn" onClick={()=>setShowOptions(prev=>!prev)}>{showOptions ? "Hide Options" : "Show Options"}</button>
+                        <button className="option-btn-menu" onClick={()=>setShowOptions(prev=>!prev)}>{showOptions ? "Hide Options" : "Show Options"}</button>
                     </div>
-                    <Dropdown
+                        <Dropdown
                             placeholderText="Select chart type"
                             stateVar={chartType}
                             optionsArr={chartTypeOptions}
@@ -97,12 +100,11 @@ export default function SelectionMenu({fromDateSeries, setFromDateSeries,
                 </div>
                 {chartType && chartType.value==="time-series" && 
                 <div className="menu-options">
-                    <Dropdown
-                        placeholderText="Select metric"
-                        optionsArr={metricOptions}
-                        stateVar={metric}
-                        setStateVar={setMetric}
-                    />
+                        <Dropdown
+                            placeholderText="Select metric"
+                            optionsArr={metricOptions}
+                            stateVar={metric}
+                            setStateVar={setMetric}/>
                         <MonthYearPicker
                             existingDate={fromDateSeries}
                             onDateChange={setFromDateSeries}
@@ -111,8 +113,7 @@ export default function SelectionMenu({fromDateSeries, setFromDateSeries,
                             setMinDate={setMinDateSeries}
                             maxDate={dataMaxDate} 
                             dateType={"from"}
-                            placeholderText={"Select a series start date"}
-                        />
+                            placeholderText={"Select a series start date"}/>
                         <MonthYearPicker 
                             existingDate={toDateSeries}
                             onDateChange={setToDateSeries}
@@ -120,17 +121,17 @@ export default function SelectionMenu({fromDateSeries, setFromDateSeries,
                             minDate={minDateSeries} 
                             setMinDate={setMinDateSeries}
                             maxDate={dataMaxDate} 
-                            placeholderText={"Select a series end date"}
-                            />
-                    <SelectSeries 
-                        selectedSeries={selectedSeries}
-                        handleCheck={handleCheck}/>
-
+                            placeholderText={"Select a series end date"}/>
+                        <SelectSeries 
+                            selectedSeries={selectedSeries}
+                            handleCheck={handleCheck}/>
+                    <div className="generateBtn">
                     <CustomButton
                         isButtonEnabled={isButtonEnabled}
                         chartType={chartType}
                         buttonText={"Generate Series Chart"}
                         handleButtonClick={handleButtonClick}/>
+                    </div>
                 </div>
                 }
 

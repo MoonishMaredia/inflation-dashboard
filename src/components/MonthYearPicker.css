@@ -79,3 +79,36 @@
     color: #ccc;
     pointer-events: none;
   }
+
+  @media (max-width: 600px) {
+    .picker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      background-color: black;
+      color: white;
+      font-size: 20px; /* Larger font size for year */
+    }
+    
+    .picker-header button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 14px; /* Larger font size for buttons */
+    }
+    .picker-months {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      padding: 5px;
+    }
+    .picker-months .month {
+      padding: 10px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 14px; /* Smaller font size for months */
+    }
+    
+  }

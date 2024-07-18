@@ -7,7 +7,7 @@ function getStyles(isDropdownSet) {
         control: (provided, state) => ({
           ...provided,
           textAlign:'left',
-          fontSize:'16px',    
+          fontSize:'1rem',    
           // border: '2px solid black',  
           backgroundColor: isDropdownSet ? 'rgb(248 250 252)' : 'rgb(248 250 252)',
           border: isDropdownSet ? '2px solid gray' : '2px solid red',

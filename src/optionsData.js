@@ -1,6 +1,6 @@
 export const chartTypeOptions = [
-  { value: 'time-series', label: 'Plot a line chart of CPI level (or rate) over time for my selected set of CPI categories' },
-  { value: 'compare', label: 'Create a waterfall chart that isolates the drivers of CPI between two times periods' },
+  { value: 'time-series', label: 'CPI over time (Line Chart)' },
+  { value: 'compare', label: 'Drivers of CPI between time periods (Waterfall Chart)' },
 ]
 
 export const typeOptions = [

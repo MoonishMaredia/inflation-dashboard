@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 import { useResults } from "./ResultsContext"
 import { useInput } from './InputContext';
@@ -21,6 +21,8 @@ export default function SeriesChart() {
     const { chartInputs } = useInput()
     const { results } = useResults();
     const [selectedPoint, setSelectedPoint] = useState(null);
+    const plotRef = useRef(null);
+    const containerRef = useRef(null);
 
     const resultKeys = Object.keys(results['time-series'].data)
     
@@ -63,7 +65,7 @@ export default function SeriesChart() {
       return baseData;
     }, [baseData, selectedPoint]);
 
-    const handleClick = useCallback((event) => {
+    const handleHover = useCallback((event) => {
       if (event.points && event.points.length > 0) {
         const point = event.points[0];
         setSelectedPoint({
@@ -74,6 +76,48 @@ export default function SeriesChart() {
         });
       }
     }, []);
+
+    const handleTouch = useCallback((e) => {
+      if (plotRef.current && plotRef.current.el) {
+        const plotEl = plotRef.current.el;
+        const rect = plotEl.getBoundingClientRect();
+        const x = e.touches[0].clientX - rect.left;
+        const y = e.touches[0].clientY - rect.top;
+        
+        if (plotEl && plotEl._fullLayout && plotEl._fullLayout.hoverLayer) {
+          const hoverLayer = plotEl._fullLayout.hoverLayer;
+          const evt = {
+            xpx: x,
+            ypx: y
+          };
+          plotEl.emit('plotly_hover', {
+            points: [
+              plotEl.closestTrace(evt, { hoverLayer })
+            ],
+            event: evt
+          });
+        }
+      }
+    }, []);
+
+    useEffect(() => {
+      const container = containerRef.current;
+      if (container) {
+        const touchStartListener = (e) => {
+          if (e.cancelable) {
+            e.preventDefault();
+          }
+        };
+
+        container.addEventListener('touchstart', touchStartListener, { passive: false });
+        container.addEventListener('touchmove', handleTouch, { passive: true });
+
+        return () => {
+          container.removeEventListener('touchstart', touchStartListener);
+          container.removeEventListener('touchmove', handleTouch);
+        };
+      }
+    }, [handleTouch]);
 
     const layout = {
       title: chartTitleMapping[chartInputs['time-series'].seriesType],
@@ -107,18 +151,23 @@ export default function SeriesChart() {
       doubleClick: false,
       modeBarButtonsToRemove: ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
       dragmode: false,
+      staticMode: false
     };
   
     return (
-      <div style={{ position: 'relative', width: '100%', height: '60vh'}}>
+      <div 
+        ref={containerRef}
+        style={{ position: 'relative', width: '100%', height: '60vh'}}
+      >
         <Plot
+          ref={plotRef}
           className="my-multi-series-line-chart"
           data={data}
           layout={layout}
           config={config}
           useResizeHandler={true}
           style={{ width: "100%", height: "100%" }}
-          onClick={handleClick}
+          onHover={handleHover}
         />
         {selectedPoint && (
           <div style={{

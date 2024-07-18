@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import Plot from 'react-plotly.js';
 import { useResults } from "./ResultsContext"
 import { useInput } from './InputContext';
@@ -15,21 +15,53 @@ const chartTitleMapping = {
   "Annual Rate": "YoY % Change by Metric Date"
 }
 
+const seriesColors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'];
+
 export default function SeriesChart() {
     const { chartInputs } = useInput()
     const { results } = useResults();
     const [selectedPoint, setSelectedPoint] = useState(null);
 
     const resultKeys = Object.keys(results['time-series'].data)
-    const data = resultKeys.map((key) => {
-      return {
-        x: results['time-series']['x-axis'],
-        y: results['time-series'].data[key].value,
-        type: 'scatter',
-        mode: 'lines',
-        name: results['time-series'].data[key].series_desc
+    
+    const baseData = useMemo(() => {
+      return resultKeys.map((key, index) => {
+        return {
+          x: results['time-series']['x-axis'],
+          y: results['time-series'].data[key].value,
+          type: 'scatter',
+          mode: 'lines',
+          name: results['time-series'].data[key].series_desc,
+          hoverinfo: 'none',
+          line: { color: seriesColors[index % seriesColors.length] }
+        }
+      });
+    }, [results]);
+
+    const data = useMemo(() => {
+      if (selectedPoint) {
+        return [
+          ...baseData,
+          {
+            x: [selectedPoint.x],
+            y: [selectedPoint.y],
+            type: 'scatter',
+            mode: 'markers',
+            marker: { 
+              color: selectedPoint.color,
+              size: 10,
+              symbol: 'circle',
+              line: {
+                color: 'white',
+                width: 2
+              }
+            },
+            showlegend: false
+          }
+        ];
       }
-    })
+      return baseData;
+    }, [baseData, selectedPoint]);
 
     const handleClick = useCallback((event) => {
       if (event.points && event.points.length > 0) {
@@ -37,7 +69,8 @@ export default function SeriesChart() {
         setSelectedPoint({
           x: point.x,
           y: point.y,
-          name: point.data.name
+          name: point.data.name,
+          color: point.data.line.color
         });
       }
     }, []);
@@ -50,6 +83,7 @@ export default function SeriesChart() {
           standoff: 30,
           font: { size: 14 }
         },
+        fixedrange: true
       },
       yaxis: {
         title: {
@@ -57,9 +91,10 @@ export default function SeriesChart() {
           standoff: 30,
           font: { size: 14 }
         },
+        fixedrange: true
       },
       margin: { l: 50, r: 20, b: 40, t: 40 },
-      legend: { orientation: 'h', y: 0.8, x: 0.1 },
+      showlegend: false,
       autosize: true,
       responsive: true,
       hovermode: 'closest'
@@ -67,11 +102,15 @@ export default function SeriesChart() {
   
     const config = {
       responsive: true,
-      displayModeBar: false, // Hide the mode bar for mobile
+      displayModeBar: false,
+      scrollZoom: false,
+      doubleClick: false,
+      modeBarButtonsToRemove: ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
+      dragmode: false,
     };
   
     return (
-      <div style={{ position: 'relative', width: '100%', height: '100vh'}}>
+      <div style={{ position: 'relative', width: '100%', height: '60vh'}}>
         <Plot
           className="my-multi-series-line-chart"
           data={data}
@@ -81,19 +120,23 @@ export default function SeriesChart() {
           style={{ width: "100%", height: "100%" }}
           onClick={handleClick}
         />
-        {/* {selectedPoint && (
+        {selectedPoint && (
           <div style={{
             position: 'absolute',
-            bottom: '7vh',
-            right: 0,
+            top: '10%',
+            left: '18%',
             background: 'rgba(255, 255, 255, 0.8)',
             padding: '5px',
             borderRadius: '5px',
-            fontSize: '12px'
+            fontSize: '12px',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+            borderLeft: `4px solid ${selectedPoint.color}`
           }}>
-            {`${selectedPoint.name}: ${selectedPoint.y} (${selectedPoint.x})`}
+            <strong style={{color: selectedPoint.color}}>{selectedPoint.name}</strong><br/>
+            {selectedPoint.x}<br/>
+            {chartTitleMapping[chartInputs['time-series'].seriesType]}: {selectedPoint.y.toFixed(2)}
           </div>
-        )} */}
+        )}
       </div>
     );
 };

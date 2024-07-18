@@ -5,11 +5,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.main {
-  display: flex;
-  flex-direction: column;
-}
-
 label {
   font-size: 1rem;
 }
@@ -276,7 +271,7 @@ label {
   margin-bottom: auto;
 }
 
-.option-btn:hover {
+.option-btn:hover, .option-btn-menu:hover {
   background: black;
   color: white;
 }
@@ -356,7 +351,7 @@ label {
     grid-area: chart;
 }
 
-.item1 > button {
+.option-btn {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -494,10 +489,15 @@ label {
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 850px) {
+
+  .item1 { grid-area: chart; }
+  .selection-menu { grid-area: menu;}
+
+
   .selection-view {
     display: grid;
-    height: 95vh;
+    height: 100vh;
     width: 100%;
     grid-template-areas:
       'chart chart chart chart chart chart chart chart chart chart'
@@ -517,22 +517,26 @@ label {
     align-self: center;
 }
 
+  .no-options-view {
+    display: grid;
+    height: 65vh;
+    width: 100%;
+    grid-template-areas:
+      'chart chart'
+      'chart chart';
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
 .option-btn-menu {
   display: none;
 }
 
-.option-btn, .option-btn-mobile {
-  display: inline;
-  font-size: 0.75rem;
-  padding: 0.5rem 1rem;
-  margin-right: 0.25rem;
-  font-size: 12px;
-  border-radius: 5px;
+.option-btn:hover, .option-btn-menu:hover {
   background: rgb(226 232 240);
   color: black;
-  cursor: pointer;
-  margin-top: auto;
-  margin-bottom: auto;
 }
 
 .generateBtn {
@@ -542,7 +546,7 @@ label {
 }
 
 .selection-menu-mobile {
-  /* height: 40vh; */
+  height: 40vh;
   width: 100%;
 }
 
@@ -581,16 +585,20 @@ label {
 }
 
 .item1 {
-  position: relative;
+  /* position: relative; */
   grid-area: chart;
+  width: 100%;
+}
+.option-btn {
+  display: flex;
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  background: rgb(226 232 240);
+  color: black;
+  cursor: pointer;
 }
 
-.item1 > button {
-position: absolute;
-top: 10px;
-left: 10px;
-z-index: 1;
-}
 
 .top-row > h3 {
   font-size: 1rem;

@@ -176,7 +176,7 @@ const WaterfallComponent = () => {
         width: '100%'
       }}>
         <h4 className="wfall-chart-title">Contribution to CPI By Category</h4>
-        <h4 className="wfall-chart-subtitle">Click on bar for more detail</h4>
+        <h4 className="wfall-chart-subtitle">Click on bars for more detail</h4>
         <div style={{ flex: '1', minWidth: 0 }}>
           <WaterfallChart setClickedCategory={setClickedCategory} />
         </div>

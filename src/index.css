@@ -489,7 +489,7 @@ label {
 }
 
 
-@media (max-width: 850px) {
+@media (max-width: 1280px) {
 
   .item1 { grid-area: chart; }
   .selection-menu { grid-area: menu;}
@@ -602,6 +602,10 @@ label {
 
 .top-row > h3 {
   font-size: 1rem;
+}
+
+.custom-label text {
+  font-size: 10px;
 }
 
 }

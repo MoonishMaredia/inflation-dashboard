@@ -6,16 +6,18 @@ import SelectionMenu from './SelectionMenu'
 import BlankChart from './BlankChart'
 import SeriesChart from './SeriesChart'
 import SeriesChartMobile from './SeriesChartMobile'
-
 import WaterfallComponent from './WaterfallComponent'
+import WaterfallComponentMobile from './WaterfallComponentMobile'
 import {getMaxDate} from '../utils/api'
 
 
 export default function FinalLayout() { 
 
     const windowSize = useWindowSize();
-    const isMobile = windowSize.width <= 850; // Adjust this breakpoint as needed  
-    console.log(isMobile)
+    const isMobile = windowSize.width <= 1280; // Adjust this breakpoint as needed  
+    // const isMobile = () => {
+    //     return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    //   };
 
     const [showOptions, setShowOptions] = useState(true)
     const [fromDateSeries, setFromDateSeries] = useState(null);
@@ -51,7 +53,7 @@ export default function FinalLayout() {
                 case 'time-series':
                     return results['time-series'] ? <SeriesChartMobile /> : <BlankChart />;
                 case 'compare':
-                    return results['compare'] ? <WaterfallComponent /> : <BlankChart />;
+                    return results['compare'] ? <WaterfallComponentMobile /> : <BlankChart />;
                 default:
                     return <BlankChart />;
             }

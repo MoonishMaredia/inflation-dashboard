@@ -21,7 +21,12 @@ export default function SeriesChart() {
 
     const generateTicks = (min, max, tickCount) => {
       const step = (max - min) / (tickCount - 1);
-      return Array.from({ length: tickCount }, (_, i) => Math.round((min + i * step) * 100) / 100);
+
+      if(chartInputs['time-series'].seriesType==="Level"){
+        return Array.from({ length: tickCount }, (_, i) => Math.floor((Math.round((min + i * step) * 100) / 100)));
+      } else {
+        return Array.from({ length: tickCount }, (_, i) => (Math.round((min + i * step) * 100) / 100).toFixed(1));
+      }
     };
     
     const data = useMemo(() => {
@@ -54,7 +59,7 @@ export default function SeriesChart() {
           yDomain: [min, max],
           yTicks: ticks
       };
-  }, [data, resultKeys]);
+  }, [results, resultKeys]);
 
     const handleClick = (point, event) => {
         if (point && point.activePayload && point.activePayload.length > 0) {
@@ -73,12 +78,12 @@ export default function SeriesChart() {
 
     return (
         <div style={{ width: '100%', height: '55vh', position: 'relative' }}>
-            <h3 style={{ textAlign: 'center', textDecoration: 'underline', marginTop: '5px', marginBottom: '15px'}}>{chartTitleMapping[chartInputs['time-series'].seriesType]}</h3>
+            <h3 style={{ textAlign: 'center', textDecoration: 'underline', marginTop: '5px', marginBottom: '10px'}}>{chartTitleMapping[chartInputs['time-series'].seriesType]}</h3>
 
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                     data={data}
-                    margin={{ top: 5, right: 0, left: 25, bottom: 5 }}
+                    margin={{ top: 5, right: 0, left: 20, bottom: 5 }}
                     onClick={handleClick}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
@@ -101,7 +106,7 @@ export default function SeriesChart() {
                     <Tooltip />
                     {resultKeys.map((key, index) => (
                         <Line
-                            key={key}
+                            key={index}
                             type="monotone"
                             dataKey={key}
                             name={seriesObj[key].series}

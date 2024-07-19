@@ -14,8 +14,8 @@ export default function SelectionMenu({fromDateSeries, setFromDateSeries,
     metric, setMetric, chartType, setChartType, showOptions, setShowOptions}){
 
     const [errors, setErrors] = useState({});
-    const [minDateSeries, setMinDateSeries] = useState(new Date(1999, 0, 1));
-    const [minDateCompare, setMinDateCompare] = useState(new Date(1999, 0, 1));
+    const [minDateSeries, setMinDateSeries] = useState(new Date(2019, 0, 1));
+    const [minDateCompare, setMinDateCompare] = useState(new Date(2019, 0, 1));
     const {results, setResults} = useResults({});
     const {chartInputs, setChartInputs} = useInput({});
     

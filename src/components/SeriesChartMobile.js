@@ -1,13 +1,8 @@
-import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
-import Plot from 'react-plotly.js';
+import React, { useState, useMemo } from 'react';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { useResults } from "./ResultsContext"
 import { useInput } from './InputContext';
-
-const YtitleMapping = {
-  "Level": "CPI Level (1984 = Index 100)",
-  "Monthly Rate": "MoM % Change",
-  "Annual Rate": "YoY % Change"
-}
+import {seriesObj} from '../optionsData'
 
 const chartTitleMapping = {
   "Level": "CPI Level by Metric Date",
@@ -21,171 +16,121 @@ export default function SeriesChart() {
     const { chartInputs } = useInput()
     const { results } = useResults();
     const [selectedPoint, setSelectedPoint] = useState(null);
-    const plotRef = useRef(null);
-    const containerRef = useRef(null);
 
     const resultKeys = Object.keys(results['time-series'].data)
+
+    const generateTicks = (min, max, tickCount) => {
+      const step = (max - min) / (tickCount - 1);
+      return Array.from({ length: tickCount }, (_, i) => Math.round((min + i * step) * 100) / 100);
+    };
     
-    const baseData = useMemo(() => {
-      return resultKeys.map((key, index) => {
-        return {
-          x: results['time-series']['x-axis'],
-          y: results['time-series'].data[key].value,
-          type: 'scatter',
-          mode: 'lines',
-          name: results['time-series'].data[key].series_desc,
-          hoverinfo: 'none',
-          line: { color: seriesColors[index % seriesColors.length] }
-        }
-      });
-    }, [results]);
-
     const data = useMemo(() => {
-      if (selectedPoint) {
-        return [
-          ...baseData,
-          {
-            x: [selectedPoint.x],
-            y: [selectedPoint.y],
-            type: 'scatter',
-            mode: 'markers',
-            marker: { 
-              color: selectedPoint.color,
-              size: 10,
-              symbol: 'circle',
-              line: {
-                color: 'white',
-                width: 2
-              }
-            },
-            showlegend: false
-          }
-        ];
-      }
-      return baseData;
-    }, [baseData, selectedPoint]);
-
-    const handleHover = useCallback((event) => {
-      if (event.points && event.points.length > 0) {
-        const point = event.points[0];
-        setSelectedPoint({
-          x: point.x,
-          y: point.y,
-          name: point.data.name,
-          color: point.data.line.color
+        return results['time-series']['x-axis'].map((date, index) => {
+            let point = { date };
+            resultKeys.forEach(key => {
+                point[key] = results['time-series'].data[key].value[index];
+            });
+            return point;
         });
-      }
-    }, []);
+    }, [results, resultKeys]);
 
-    const handleTouch = useCallback((e) => {
-      if (plotRef.current && plotRef.current.el) {
-        const plotEl = plotRef.current.el;
-        const rect = plotEl.getBoundingClientRect();
-        const x = e.touches[0].clientX - rect.left;
-        const y = e.touches[0].clientY - rect.top;
-        
-        if (plotEl && plotEl._fullLayout && plotEl._fullLayout.hoverLayer) {
-          const hoverLayer = plotEl._fullLayout.hoverLayer;
-          const evt = {
-            xpx: x,
-            ypx: y
-          };
-          plotEl.emit('plotly_hover', {
-            points: [
-              plotEl.closestTrace(evt, { hoverLayer })
-            ],
-            event: evt
+    const { yDomain, yTicks } = useMemo(() => {
+      let minValue = Infinity;
+      let maxValue = -Infinity;
+      data.forEach(point => {
+          resultKeys.forEach(key => {
+              if (point[key] < minValue) minValue = point[key];
+              if (point[key] > maxValue) maxValue = point[key];
           });
+      });
+      const padding = (maxValue - minValue) * 0.1;
+      const min = Math.floor(Math.max(0, minValue - padding));
+      const max = Math.ceil(maxValue + padding);
+      
+      // Generate 6 evenly spaced ticks
+      const ticks = generateTicks(min, max, 6);
+      
+      return {
+          yDomain: [min, max],
+          yTicks: ticks
+      };
+  }, [data, resultKeys]);
+
+    const handleClick = (point, event) => {
+        if (point && point.activePayload && point.activePayload.length > 0) {
+            const clickedPoint = point.activePayload[0];
+            setSelectedPoint({
+                x: clickedPoint.payload.date,
+                y: clickedPoint.value,
+                name: clickedPoint.dataKey
+            });
         }
-      }
-    }, []);
-
-    useEffect(() => {
-      const container = containerRef.current;
-      if (container) {
-        const touchStartListener = (e) => {
-          if (e.cancelable) {
-            e.preventDefault();
-          }
-        };
-
-        container.addEventListener('touchstart', touchStartListener, { passive: false });
-        container.addEventListener('touchmove', handleTouch, { passive: true });
-
-        return () => {
-          container.removeEventListener('touchstart', touchStartListener);
-          container.removeEventListener('touchmove', handleTouch);
-        };
-      }
-    }, [handleTouch]);
-
-    const layout = {
-      title: chartTitleMapping[chartInputs['time-series'].seriesType],
-      xaxis: {
-        title: {
-          text: 'Metric Date',
-          standoff: 30,
-          font: { size: 14 }
-        },
-        fixedrange: true
-      },
-      yaxis: {
-        title: {
-          text: YtitleMapping[chartInputs['time-series'].seriesType],
-          standoff: 30,
-          font: { size: 14 }
-        },
-        fixedrange: true
-      },
-      margin: { l: 50, r: 20, b: 40, t: 40 },
-      showlegend: false,
-      autosize: true,
-      responsive: true,
-      hovermode: 'closest'
     };
-  
-    const config = {
-      responsive: true,
-      displayModeBar: false,
-      scrollZoom: false,
-      doubleClick: false,
-      modeBarButtonsToRemove: ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d'],
-      dragmode: false,
-      staticMode: false
-    };
-  
+
+    const formatXAxis = (tickItem) => {
+      return new Date(tickItem).getFullYear();
+  }
+
     return (
-      <div 
-        ref={containerRef}
-        style={{ position: 'relative', width: '100%', height: '60vh'}}
-      >
-        <Plot
-          ref={plotRef}
-          className="my-multi-series-line-chart"
-          data={data}
-          layout={layout}
-          config={config}
-          useResizeHandler={true}
-          style={{ width: "100%", height: "100%" }}
-          onHover={handleHover}
-        />
-        {selectedPoint && (
-          <div style={{
-            position: 'absolute',
-            top: '10%',
-            left: '18%',
-            background: 'rgba(255, 255, 255, 0.8)',
-            padding: '5px',
-            borderRadius: '5px',
-            fontSize: '12px',
-            boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-            borderLeft: `4px solid ${selectedPoint.color}`
-          }}>
-            <strong style={{color: selectedPoint.color}}>{selectedPoint.name}</strong><br/>
-            {selectedPoint.x}<br/>
-            {chartTitleMapping[chartInputs['time-series'].seriesType]}: {selectedPoint.y.toFixed(2)}
-          </div>
-        )}
-      </div>
+        <div style={{ width: '100%', height: '55vh', position: 'relative' }}>
+            <h3 style={{ textAlign: 'center', textDecoration: 'underline', marginTop: '5px', marginBottom: '15px'}}>{chartTitleMapping[chartInputs['time-series'].seriesType]}</h3>
+
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                    data={data}
+                    margin={{ top: 5, right: 0, left: 25, bottom: 5 }}
+                    onClick={handleClick}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis 
+                        dataKey="date" 
+                        axisLine={true}
+                        tickLine={false}
+                        tick={{ fontSize: 10 }}
+                        tickFormatter={formatXAxis}
+                    />
+                    <YAxis 
+                        domain={yDomain}
+                        axisLine={true}
+                        tickLine={true}
+                        tick={{ fontSize: 10 }}
+                        width={3}
+                        orientation="left"
+                        ticks={yTicks}
+                    />
+                    <Tooltip />
+                    {resultKeys.map((key, index) => (
+                        <Line
+                            key={key}
+                            type="monotone"
+                            dataKey={key}
+                            name={seriesObj[key].series}
+                            stroke={seriesColors[index % seriesColors.length]}
+                            dot={false}
+                            activeDot={{ r: 8 }}
+                            strokeWidth={2}
+                        />
+                    ))}
+                </LineChart>
+            </ResponsiveContainer>
+        </div>
     );
-};
+}
+
+
+
+// {selectedPoint && (
+//   <div style={{
+//       position: 'absolute',
+//       top: '10px',
+//       right: '10px',
+//       background: 'rgba(255, 255, 255, 0.8)',
+//       padding: '5px',
+//       borderRadius: '5px',
+//       fontSize: '12px',
+//       boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+//       zIndex: 1000
+//   }}>
+//       {/* <strong>{selectedPoint.name}: {selectedPoint.x}, {selectedPoint.y.toFixed(2)}</strong> */}
+//   </div>
+// )}

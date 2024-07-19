@@ -608,4 +608,26 @@ label {
   font-size: 10px;
 }
 
+.wfall-detail-title {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.wfall-chart-title {
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.wfall-chart-subtitle {
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 0;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: italic;
+}
+
 }

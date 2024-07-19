@@ -38,17 +38,16 @@ const WaterfallChart = ({ setClickedCategory }) => {
     };
   });
 
-  const handleClick = (data) => {
+  const handleClick = (data, index) => {
     if (data) {
-      const index = data.index;
-      const xValue = data.value;
-      setClickedCategory({ index, xValue });
+      setClickedCategory({ index, xValue: data.name });
     }
   };
 
+
   return (
     <ResponsiveContainer width="100%" height="100%" className="custom-label">
-      <BarChart data={data} layout="vertical" margin={{ left: 15, right: 25, top: 10, bottom: 0 }}>
+      <BarChart data={data} layout="vertical" margin={{ left: 20, right: 15, top: 10, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis 
         type="number" 
@@ -58,14 +57,15 @@ const WaterfallChart = ({ setClickedCategory }) => {
         dataKey="name" 
         tick={{ fontSize: 10 }}
         />
-        <Tooltip />
-        <Bar dataKey="previousValue" stackId="a" fill="transparent" />
-        <Bar dataKey="value" stackId="a" onClick={(data) => handleClick(data)}>
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={entry.color} />
-          ))}
-          <LabelList 
-          dataKey="value" position="right" formatter={(value) => `${value.toFixed(1)}`} />
+        <Bar dataKey="previousValue" stackId="a" fill="transparent" onClick={(data, index) => handleClick(data, index)}/>
+        <Bar dataKey="value" stackId="a" onClick={(data, index) => handleClick(data, index)}>
+            {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+            ))}
+            <LabelList 
+                dataKey="value" 
+                position="right" 
+                formatter={(value) => `${value.toFixed(1)}`} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
@@ -80,12 +80,11 @@ function InfoDisplay({ category, categoryIndex, chartInputs, results }) {
   return (
     <div>
       <div className="">
-        <p className="wfall-detail-title">{categoryString}</p>
         {categoryKeys && categoryIndex !== 0 && categoryIndex !== results['compare']['x-axis'].length - 1 &&
           <>
             <div className='category-display-header'>
               <p>Total Contributing Change</p>
-              <p>{results['compare']['y-axis'][categoryIndex].toFixed(3)}</p>
+              <p>{results['compare']['y-axis'][categoryIndex].toFixed(1)}</p>
             </div>
             {categoryKeys.map((key, index) => {
               return (
@@ -101,7 +100,7 @@ function InfoDisplay({ category, categoryIndex, chartInputs, results }) {
         }
         {categoryIndex === 0 &&
           <div>
-            <p className="display-explain">Price level indexed to 100 for your series start date</p>
+            <p className="display-explain">Price level indexed to 100 for your series start date. <br></br><br></br>Each bar describes how much that category contributed to the total change in CPI between time periods</p>
           </div>
         }
         {categoryIndex === results['compare']['x-axis'].length - 1 &&
@@ -112,50 +111,91 @@ function InfoDisplay({ category, categoryIndex, chartInputs, results }) {
   );
 };
 
-function Modal({ show, onClose, children }) {
-  if (!show) {
-    return null;
+function Modal({ show, onClose, children, title }) {
+    if (!show) {
+      return null;
+    }
+  
+    return (
+      <div className="modal-backdrop" style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000
+      }}>
+        <div className="modal-content" style={{
+          backgroundColor: 'white',
+          padding: '20px',
+          borderRadius: '5px',
+          maxWidth: '80%',
+          maxHeight: '80%',
+          overflow: 'auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '15px'
+          }}>
+            <p className="wfall-detail-title">{title}</p>
+            <button onClick={onClose} className="modal-close-button">Close</button>
+          </div>
+          {children}
+        </div>
+      </div>
+    );
   }
 
-  return (
-    <div className="modal-backdrop">
-      <div className="modal-content">
-        <button onClick={onClose} className="modal-close-button">Close</button>
-        {children}
-      </div>
-    </div>
-  );
-}
-
 const WaterfallComponent = () => {
-  const [clickedCategory, setClickedCategory] = useState(null);
-  const { results } = useResults({});
-  const { chartInputs } = useInput({});
+    const [clickedCategory, setClickedCategory] = useState(null);
+    const { results } = useResults({});
+    const { chartInputs } = useInput({});
+  
+    const handleCloseModal = () => {
+      setClickedCategory(null);
+    };
 
-  return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      width: '100%'
-    }}>
-      <div style={{ flex: '1', minWidth: 0 }}>
-        <WaterfallChart setClickedCategory={setClickedCategory} />
+    const getCategoryString = (category, categoryIndex) => {
+        if (!category) return "Category Information";
+        if (categoryIndex === 0) return "Series Start";
+        if (categoryIndex === results['compare']['x-axis'].length - 1) return "Series End";
+        return category;
+      };
+  
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        width: '100%'
+      }}>
+        <h4 className="wfall-chart-title">Contribution to CPI By Category</h4>
+        <h4 className="wfall-chart-subtitle">Click on bar for more detail</h4>
+        <div style={{ flex: '1', minWidth: 0 }}>
+          <WaterfallChart setClickedCategory={setClickedCategory} />
+        </div>
+        <Modal 
+        show={clickedCategory !== null} 
+        onClose={handleCloseModal} 
+        title={clickedCategory ? getCategoryString(clickedCategory.xValue, clickedCategory.index) : ""}>
+          {clickedCategory &&
+            <InfoDisplay
+              category={clickedCategory.xValue}
+              categoryIndex={clickedCategory.index}
+              chartInputs={chartInputs}
+              results={results}
+            />
+          }
+        </Modal>
       </div>
-      <Modal show={clickedCategory !== null} onClose={() => setClickedCategory(null)}>
-        {clickedCategory &&
-          <InfoDisplay
-            category={clickedCategory.xValue}
-            categoryIndex={clickedCategory.index}
-            chartInputs={chartInputs}
-            results={results}
-          />
-        }
-      </Modal>
-
-    </div>
-  );
-};
+    );
+  };
 
 export default WaterfallComponent;
 
@@ -175,7 +215,7 @@ function CategoryCard({ level, title, weight }) {
   return (
     <div className="category-display-row">
       <p className={getClassName(level, "title")}>{title}</p>
-      <p className={getClassName(level, "weight")}>{weight.toFixed(3)}</p>
+      <p className={getClassName(level, "weight")}>{weight.toFixed(1)}</p>
     </div>
   );
 }

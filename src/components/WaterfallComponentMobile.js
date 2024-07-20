@@ -47,7 +47,7 @@ const WaterfallChart = ({ setClickedCategory }) => {
 
   return (
     <ResponsiveContainer width="100%" height="100%" className="custom-label">
-      <BarChart data={data} layout="vertical" margin={{ left: 20, right: 15, top: 10, bottom: 0 }}>
+      <BarChart data={data} layout="vertical" margin={{ left: 26, right: 15, top: 10, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis 
         type="number" 
@@ -73,14 +73,14 @@ const WaterfallChart = ({ setClickedCategory }) => {
 };
 
 function InfoDisplay({ category, categoryIndex, chartInputs, results }) {
-  const categoryKeys = (category && categoryIndex !== 0 && categoryIndex !== results['compare']['x-axis'].length - 1) ? Object.keys(results['compare']['details'][category]) : null;
-  const subResults = (category && categoryIndex !== 0 && categoryIndex !== results['compare']['x-axis'].length - 1) ? results['compare']['details'][category] : null;
-  const categoryString = !category ? "Category Information" : categoryIndex === 0 ? "Series Start" : categoryIndex === results['compare']['x-axis'].length - 1 ? "Series End" : category;
+  const categoryKeys = (category && categoryIndex !== 0 && categoryIndex !== 9) ? Object.keys(results['compare']['details'][category]) : null;
+  const subResults = (category && categoryIndex !== 0 && categoryIndex !== 9) ? results['compare']['details'][category] : null;
+  const categoryString = !category ? "Category Information" : categoryIndex === 0 ? "Series Start" : categoryIndex !== 9 ? "Series End" : category;
 
   return (
     <div>
       <div className="">
-        {categoryKeys && categoryIndex !== 0 && categoryIndex !== results['compare']['x-axis'].length - 1 &&
+        {categoryKeys && categoryIndex !== 0 && categoryIndex !== 9 &&
           <>
             <div className='category-display-header'>
               <p>Total Contributing Change</p>
@@ -100,11 +100,11 @@ function InfoDisplay({ category, categoryIndex, chartInputs, results }) {
         }
         {categoryIndex === 0 &&
           <div>
-            <p className="display-explain">Price level indexed to 100 for your series start date. <br></br><br></br>Each bar describes how much that category contributed to the total change in CPI between time periods</p>
+            <p className="display-explain">Price level indexed to 100 for your series start date. <br></br><br></br>Each bar describes how much that category contributed to the total change in CPI between time periods, accounting for both its importance and level change</p>
           </div>
         }
-        {categoryIndex === results['compare']['x-axis'].length - 1 &&
-          <p className="display-explain">CPI index {results['compare']['y-axis'][results['compare']['x-axis'].length - 1] - 100 > 0 ? "increased" : "decreased"} by ~{Math.abs((results['compare']['y-axis'][results['compare']['x-axis'].length - 1] - 100).toFixed(0))}% between {stringToMonth[chartInputs['compare'].monthStart]}, {chartInputs['compare'].yearStart} and {stringToMonth[chartInputs['compare'].monthEnd]}, {chartInputs['compare'].yearEnd}</p>
+        {categoryIndex === 9 &&
+          <p className="display-explain">CPI index {results['compare']['y-axis'][9] - 100 > 0 ? "increased" : "decreased"} by ~{Math.abs((results['compare']['y-axis'][9] - 100).toFixed(0))}% between {stringToMonth[chartInputs['compare'].monthStart]}, {chartInputs['compare'].yearStart} and {stringToMonth[chartInputs['compare'].monthEnd]}, {chartInputs['compare'].yearEnd}</p>
         }
       </div>
     </div>

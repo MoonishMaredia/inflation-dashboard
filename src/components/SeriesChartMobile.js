@@ -83,7 +83,7 @@ export default function SeriesChart() {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                     data={data}
-                    margin={{ top: 5, right: 0, left: 20, bottom: 5 }}
+                    margin={{ top: 5, right: 0, left: 25, bottom: 5 }}
                     onClick={handleClick}
                 >
                   <CartesianGrid strokeDasharray="3 3" />

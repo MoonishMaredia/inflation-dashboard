@@ -156,11 +156,13 @@ export default function SelectionMenu({fromDateSeries, setFromDateSeries,
                             maxDate={dataMaxDate} 
                             placeholderText={"Select a series end date"}
                             />
+                        <div className="generateBtn">
                         <CustomButton
                             isButtonEnabled={isButtonEnabled}
                             chartType={chartType}
                             buttonText={"Generate Waterfall Chart"}
                             handleButtonClick={handleButtonClick}/>
+                        </div>
                     </div>
                 }
             </div>

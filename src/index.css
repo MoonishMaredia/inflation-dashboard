@@ -517,19 +517,6 @@ label {
     align-self: center;
 }
 
-  .no-options-view {
-    display: grid;
-    height: 65vh;
-    width: 100%;
-    grid-template-areas:
-      'chart chart'
-      'chart chart';
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-
 .option-btn-menu {
   display: none;
 }
@@ -541,13 +528,7 @@ label {
 
 .generateBtn {
   width: 100%;
-  display: block;
-  margin-bottom: 40px;
-}
-
-.selection-menu-mobile {
-  height: 40vh;
-  width: 100%;
+  margin-bottom: 60px;
 }
 
 .blank-chart > h2 {
@@ -599,7 +580,6 @@ label {
   cursor: pointer;
 }
 
-
 .top-row > h3 {
   font-size: 1rem;
 }
@@ -642,6 +622,10 @@ label {
 
 .category-display-row > .level3-title {
   margin-left: 10px;
+}
+
+.option-btn {
+  margin-bottom: 150px;
 }
 
 }

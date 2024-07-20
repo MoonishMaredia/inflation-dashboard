@@ -135,7 +135,7 @@ function InfoDisplay({ category, categoryIndex, chartInputs, results }) {
           }
         {categoryIndex === 0 && 
           <div>
-            <p className="display-explain">Price level indexed to 100 for your series start date</p>
+            <p className="display-explain">Price level indexed to 100 for your series start date</p><br></br><br></br>Each bar describes how much that category contributed to the total change in CPI between time periods, accounting for both its importance and level change
           </div>
         }
         {categoryIndex === 9 && 

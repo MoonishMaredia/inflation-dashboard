@@ -119,6 +119,9 @@ export default function FinalLayout() {
             ) : (
             <>
                 <div className="selection-view">
+                    <div className="item1">
+                        {renderChart(isMobile)}
+                    </div>
                     <div className="selection-menu">
                         <SelectionMenu
                             fromDateSeries={fromDateSeries}
@@ -139,9 +142,6 @@ export default function FinalLayout() {
                             showOptions={showOptions}
                             setShowOptions={setShowOptions}
                         />
-                    </div>
-                    <div className="item1">
-                        {renderChart(isMobile)}
                     </div>
                 </div>
             </>

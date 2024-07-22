@@ -82,7 +82,7 @@ export default function SelectionMenu({fromDateSeries, setFromDateSeries,
         }
 
         setShowOptions(false)
-
+        window.scrollTo(0, 0)
         }
 
         return (
